@@ -1,16 +1,16 @@
+#include "constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
-#include "constants.hpp"
 
 // DI imports
 #include "DI/DI.hpp"
-#include "DI/NoDI.hpp"
 #include "DI/LeftRightDI.hpp"
+#include "DI/NoDI.hpp"
 
 // EscapeOption imports
 #include "EscapeOption/EscapeOption.hpp"
-#include "EscapeOption/NoEscapeOption.hpp"
 #include "EscapeOption/MashJump.hpp"
+#include "EscapeOption/NoEscapeOption.hpp"
 
 // Define a Gamecube Controller
 CGamecubeConsole GamecubeController(CONTROLLER_DATA_PIN);
@@ -19,17 +19,14 @@ CGamecubeConsole GamecubeController(CONTROLLER_DATA_PIN);
 CGamecubeController GamecubeConsole(CONSOLE_DATA_PIN);
 
 // Current DI setting
-DI* activeDI;
+DI *activeDI;
 
 // Current escape option
-EscapeOption* activeEscapeOption;
+EscapeOption *activeEscapeOption;
 
-void setup()
-{
+void setup() {
     activeDI = new NoDI;
     activeEscapeOption = new NoEscapeOption;
 }
 
-void loop()
-{
-}
+void loop() {}

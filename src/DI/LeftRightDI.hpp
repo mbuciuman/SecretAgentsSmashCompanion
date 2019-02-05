@@ -1,19 +1,18 @@
 #ifndef GCTRAIN_DI_LEFTRIGHTDI_H_
 #define GCTRAIN_DI_LEFTRIGHTDI_H_
 
+#include "../constants.hpp"
+#include "DI.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
-#include "DI.hpp"
-#include "../constants.hpp"
 
-class LeftRightDI : public DI
-{
-    private:
+class LeftRightDI : public DI {
+      private:
         Direction prevDirection;
 
-    public:
+      public:
         LeftRightDI();
-        void inputDI(Gamecube_Data_t* dataToModify);
+        void inputDI(Gamecube_Data_t *dataToModify);
 };
 
 #endif // GCTRAIN_DI_LEFTRIGHTDI_H_

@@ -3,11 +3,10 @@
 
 #include <Nintendo.h>
 
-class EscapeOption
-{
-public:
+class EscapeOption {
+  public:
     EscapeOption() = default;
-    virtual void inputEscapeOption(Gamecube_Data_t* dataToModify) = 0;
+    virtual void inputEscapeOption(Gamecube_Data_t *dataToModify) = 0;
 };
 
 #endif // GCTRAIN_ESCAPEOPTION_ESCAPEOPTION_H

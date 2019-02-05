@@ -2,8 +2,7 @@
 
 #include <stdlib.h>
 
-void RandomDI::inputDI(Gamecube_Data_t* dataToModify)
-{
+void RandomDI::inputDI(Gamecube_Data_t *dataToModify) {
     srand(time(NULL));
     int range = MAX_AXIS_VAL - MIN_AXIS_VAL;
     // set x and y axis to random value between min and max axis values
