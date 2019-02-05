@@ -9,7 +9,7 @@
 class LeftRightDI : public DI
 {
     private:
-        Direction prevDirection = Direction::LEFT;
+        Direction prevDirection;
 
     public:
         LeftRightDI();

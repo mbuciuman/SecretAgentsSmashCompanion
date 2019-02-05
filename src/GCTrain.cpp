@@ -7,6 +7,11 @@
 #include "DI/NoDI.hpp"
 #include "DI/LeftRightDI.hpp"
 
+// EscapeOption imports
+#include "EscapeOption/EscapeOption.hpp"
+#include "EscapeOption/NoEscapeOption.hpp"
+#include "EscapeOption/MashJump.hpp"
+
 // Define a Gamecube Controller
 CGamecubeConsole GamecubeController(CONTROLLER_DATA_PIN);
 
@@ -22,6 +27,7 @@ EscapeOption* activeEscapeOption;
 void setup()
 {
     activeDI = new NoDI;
+    activeEscapeOption = new NoEscapeOption;
 }
 
 void loop()
