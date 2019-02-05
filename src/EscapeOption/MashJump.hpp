@@ -9,6 +9,7 @@ class MashJump : public EscapeOption {
     bool executingJump;
 
   public:
+    MashJump();
     void inputEscapeOption(Gamecube_Data_t *dataToModify);
 };
 

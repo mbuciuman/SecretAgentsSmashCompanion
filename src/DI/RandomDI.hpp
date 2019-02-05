@@ -8,7 +8,6 @@
 
 class RandomDI : public DI {
   public:
-    RandomDI();
     void inputDI(Gamecube_Data_t *dataToModify);
 };
 

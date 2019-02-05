@@ -5,7 +5,6 @@
 
 class EscapeOption {
   public:
-    EscapeOption() = default;
     virtual void inputEscapeOption(Gamecube_Data_t *dataToModify) = 0;
 };
 

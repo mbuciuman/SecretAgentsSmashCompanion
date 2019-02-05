@@ -4,11 +4,13 @@ MashJump::MashJump() { executingJump = false; }
 
 void MashJump::inputEscapeOption(Gamecube_Data_t *dataToModify) {
     if (executingJump) {
+        // toggle jump off if executing jump
         dataToModify->report.x = 0;
     } else {
+        // toggle jump on if not executing jump
         dataToModify->report.x = 1;
     }
 
-    // toggle jump to input it every other frame
+    // toggle var to input it every other frame
     executingJump = !executingJump;
 }

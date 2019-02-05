@@ -1,6 +1,7 @@
 #include "RandomDI.hpp"
 
 #include <stdlib.h>
+#include <time.h>
 
 void RandomDI::inputDI(Gamecube_Data_t *dataToModify) {
     srand(time(NULL));
