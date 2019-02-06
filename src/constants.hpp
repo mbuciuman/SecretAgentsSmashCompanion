@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 enum class Direction { LEFT, UP, RIGHT, DOWN };
+enum class ControllerInput { A, B, X, Y, L, R, Z, XAXIS, YAXIS, C_XAXIS, C_YAXIS };
 
 // Pin definitions
 const int PIN_LED = LED_BUILTIN;
