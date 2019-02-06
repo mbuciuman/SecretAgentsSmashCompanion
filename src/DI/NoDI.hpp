@@ -1,12 +1,13 @@
-#ifndef GCTRAIN_DI_NODI_H_
-#define GCTRAIN_DI_NODI_H_
+#ifndef GCTRAIN_DI_NODI_HPP_
+#define GCTRAIN_DI_NODI_HPP_
 
-#include "DI.hpp"
+#include "../InputModifier.hpp"
 #include <Nintendo.h>
 
-class NoDI : public DI {
+class NoDI : public InputModifier {
   public:
-    void inputDI(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t *dataToModify);
+    void cleanUp();
 };
 
-#endif // GCTRAIN_DI_NODI_H_
+#endif // GCTRAIN_DI_NODI_HPP_

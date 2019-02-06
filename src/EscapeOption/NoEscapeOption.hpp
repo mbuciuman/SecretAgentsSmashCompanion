@@ -1,12 +1,13 @@
-#ifndef GCTRAIN_ESCAPEOPTION_NOESCAPEOPTION_H_
-#define GCTRAIN_ESCAPEOPTION_NOESCAPEOPTION_H_
+#ifndef GCTRAIN_ESCAPEOPTION_NOESCAPEOPTION_HPP_
+#define GCTRAIN_ESCAPEOPTION_NOESCAPEOPTION_HPP_
 
-#include "EscapeOption.hpp"
+#include "../InputModifier.hpp"
 #include <Nintendo.h>
 
-class NoEscapeOption : public EscapeOption {
+class NoEscapeOption : public InputModifier {
   public:
-    void inputEscapeOption(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t *dataToModify);
+    void cleanUp();
 };
 
-#endif // GCTRAIN_ESCAPEOPTION_NOESCAPEOPTION_H_
+#endif // GCTRAIN_ESCAPEOPTION_NOESCAPEOPTION_HPP_

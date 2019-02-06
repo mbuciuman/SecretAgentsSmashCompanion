@@ -1,16 +1,17 @@
-#ifndef GCTRAIN_ESCAPEOPTION_MASHJUMP_H_
-#define GCTRAIN_ESCAPEOPTION_MASHJUMP_H_
+#ifndef GCTRAIN_ESCAPEOPTION_MASHJUMP_HPP_
+#define GCTRAIN_ESCAPEOPTION_MASHJUMP_HPP_
 
-#include "EscapeOption.hpp"
+#include "../InputModifier.hpp"
 #include <Nintendo.h>
 
-class MashJump : public EscapeOption {
+class MashJump : public InputModifier {
   private:
     bool executingJump;
 
   public:
     MashJump();
-    void inputEscapeOption(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t *dataToModify);
+    void cleanUp();
 };
 
-#endif // GCTRAIN_ESCAPEOPTION_MASHJUMP_H_
+#endif // GCTRAIN_ESCAPEOPTION_MASHJUMP_HPP_

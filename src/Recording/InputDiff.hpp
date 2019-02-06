@@ -1,5 +1,5 @@
-#ifndef GCTRAIN_RECORDING_INPUTDIFF_H_
-#define GCTRAIN_RECORDING_INPUTDIFF_H_
+#ifndef GCTRAIN_RECORDING_INPUTDIFF_HPP_
+#define GCTRAIN_RECORDING_INPUTDIFF_HPP_
 
 #include "../constants.hpp"
 #include <Arduino.h>
@@ -21,4 +21,4 @@ class InputDiff {
         InputDiff(long timeDiff, Gamecube_Data_t *firstData, Gamecube_Data_t *secondData);
 };
 
-#endif // GCTRAIN_RECORDING_INPUTDIFF_H_
+#endif // GCTRAIN_RECORDING_INPUTDIFF_HPP_

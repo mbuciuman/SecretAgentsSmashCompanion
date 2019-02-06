@@ -1,5 +1,5 @@
-#ifndef GCTRAIN_RECORDING_INPUTRECORDING_H_
-#define GCTRAIN_RECORDING_INPUTRECORDING_H_
+#ifndef GCTRAIN_RECORDING_INPUTRECORDING_HPP_
+#define GCTRAIN_RECORDING_INPUTRECORDING_HPP_
 
 #include <Nintendo.h>
 #include <linked_list.h>
@@ -15,7 +15,6 @@ class InputRecording {
         InputRecording(Gamecube_Data_t *initialData);
         void submitInput(Gamecube_Data_t *currentData);
         void stopRecording();
-        void playbackRecording(Gamecube_Data_t *dataToModify);
 
 };
-#endif // GCTRAIN_RECORDING_INPUTRECORDING_H_
+#endif // GCTRAIN_RECORDING_INPUTRECORDING_HPP_

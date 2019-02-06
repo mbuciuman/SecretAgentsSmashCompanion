@@ -1,18 +1,19 @@
-#ifndef GCTRAIN_DI_LEFTRIGHTDI_H_
-#define GCTRAIN_DI_LEFTRIGHTDI_H_
+#ifndef GCTRAIN_DI_LEFTRIGHTDI_HPP_
+#define GCTRAIN_DI_LEFTRIGHTDI_HPP_
 
 #include "../constants.hpp"
-#include "DI.hpp"
+#include "../InputModifier.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 
-class LeftRightDI : public DI {
+class LeftRightDI : public InputModifier {
       private:
         Direction prevDirection;
 
       public:
         LeftRightDI();
-        void inputDI(Gamecube_Data_t *dataToModify);
+        void modifyInput(Gamecube_Data_t *dataToModify);
+        void cleanUp();
 };
 
-#endif // GCTRAIN_DI_LEFTRIGHTDI_H_
+#endif // GCTRAIN_DI_LEFTRIGHTDI_HPP_

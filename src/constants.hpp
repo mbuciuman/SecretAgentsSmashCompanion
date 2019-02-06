@@ -1,11 +1,11 @@
-#ifndef GCTRAIN_CONSTANTS_H_
-#define GCTRAIN_CONSTANTS_H_
+#ifndef GCTRAIN_CONSTANTS_HPP_
+#define GCTRAIN_CONSTANTS_HPP_
 
 #include <Arduino.h>
 #include <stdint.h>
 
 enum class Direction { LEFT, UP, RIGHT, DOWN };
-enum class ControllerInput { A, B, X, Y, L, R, Z, XAXIS, YAXIS, C_XAXIS, C_YAXIS };
+enum class ControllerInput { A, B, X, Y, L, R, Z, XAXIS, YAXIS, C_XAXIS, C_YAXIS, DPAD_UP, DPAD_RIGHT, DPAD_LEFT, DPAD_DOWN };
 
 // Pin definitions
 const int PIN_LED = LED_BUILTIN;
@@ -18,4 +18,4 @@ const uint8_t MIN_AXIS_VAL = 32;
 const uint8_t MAX_AXIS_VAL = 234;
 const uint8_t AVG_AXIS_VAL = 127;
 
-#endif // GCTRAIN_CONSTANTS_H_
+#endif // GCTRAIN_CONSTANTS_HPP_

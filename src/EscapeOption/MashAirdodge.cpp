@@ -5,7 +5,7 @@
 
 MashAirdodge::MashAirdodge() { executingAirdodge = false; }
 
-void MashAirdodge::inputEscapeOption(Gamecube_Data_t *dataToModify) {
+void MashAirdodge::modifyInput(Gamecube_Data_t *dataToModify) {
     if (executingAirdodge) {
         // toggle airdodge off if executing airdodge
         dataToModify->report.l = 0;
@@ -25,4 +25,8 @@ void MashAirdodge::inputEscapeOption(Gamecube_Data_t *dataToModify) {
 
     // toggle var to input it every other frame
     executingAirdodge = !executingAirdodge;
+}
+
+void MashAirdodge::cleanUp() {
+    // nothing to do
 }
