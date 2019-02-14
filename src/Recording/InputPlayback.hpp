@@ -1,12 +1,21 @@
 #ifndef GCTRAIN_RECORDING_INPUTPLAYBACK_HPP_
 #define GCTRAIN_RECORDING_INPUTPLAYBACK_HPP_
 
-import "../InputModifier.hpp"
+#include "../InputModifier.hpp"
+#include "InputDiff.hpp"
+#include <Nintendo.h>
+#include <linked_list.h>
 
 class InputPlayback : public InputModifier {
-    public:
-        void modifyInput(Gamecube_Data_t *dataToModify);
-        void cleanUp();
-}
+  private:
+    LinkedList<InputDiff> *inputDiffs;
+
+  public:
+    InputPlayback();
+    void initialize(Gamecube_Data_t *initialData,
+                    LinkedList<InputDiff> *inputDiffs);
+    void modifyInput(Gamecube_Data_t *dataToModify);
+    void cleanUp();
+};
 
 #endif // GCTRAIN_RECORDING_INPUTPLAYBACK_HPP_

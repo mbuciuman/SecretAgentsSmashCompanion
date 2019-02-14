@@ -12,13 +12,15 @@ struct SingleInputDiff {
 };
 
 class InputDiff {
-    private:
-        long timeDiff;
-        LinkedList<SingleInputDiff> *inputDiffs; 
-        LinkedList<SingleInputDiff>* createDiffs(Gamecube_Data_t *firstData, Gamecube_Data_t *secondData);
+  private:
+    long timeDiff;
+    LinkedList<SingleInputDiff> *inputDiffs;
+    LinkedList<SingleInputDiff> *createDiffs(Gamecube_Data_t *firstData,
+                                             Gamecube_Data_t *secondData);
 
-    public:
-        InputDiff(long timeDiff, Gamecube_Data_t *firstData, Gamecube_Data_t *secondData);
+  public:
+    InputDiff(long timeDiff, Gamecube_Data_t *firstData,
+              Gamecube_Data_t *secondData);
 };
 
 #endif // GCTRAIN_RECORDING_INPUTDIFF_HPP_

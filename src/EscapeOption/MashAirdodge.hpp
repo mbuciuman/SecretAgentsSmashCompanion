@@ -1,8 +1,8 @@
 #ifndef GCTRAIN_ESCAPEOPTION_MASHAIRDODGE_HPP_
 #define GCTRAIN_ESCAPEOPTION_MASHAIRDODGE_HPP_
 
-#include "../constants.hpp"
 #include "../InputModifier.hpp"
+#include "../constants.hpp"
 #include <Nintendo.h>
 
 class MashAirdodge : public InputModifier {
