@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-MashAirdodge::MashAirdodge() { executingAirdodge = false; }
+MashAirdodge::MashAirdodge() : executingAirdodge(false) {}
+
+MashAirdodge::~MashAirdodge() {}
 
 void MashAirdodge::modifyInput(Gamecube_Data_t *dataToModify) {
     if (executingAirdodge) {

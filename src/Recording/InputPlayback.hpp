@@ -11,7 +11,8 @@ class InputPlayback : public InputModifier {
     LinkedList<InputDiff> *inputDiffs;
 
   public:
-    InputPlayback();
+    explicit InputPlayback();
+    ~InputPlayback();
     void initialize(Gamecube_Data_t *initialData,
                     LinkedList<InputDiff> *inputDiffs);
     void modifyInput(Gamecube_Data_t *dataToModify);

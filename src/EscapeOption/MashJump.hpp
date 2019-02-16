@@ -9,7 +9,8 @@ class MashJump : public InputModifier {
     bool executingJump;
 
   public:
-    MashJump();
+    explicit MashJump();
+    ~MashJump();
     void modifyInput(Gamecube_Data_t *dataToModify);
     void cleanUp();
 };

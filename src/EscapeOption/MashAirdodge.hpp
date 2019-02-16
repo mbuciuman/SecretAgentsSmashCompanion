@@ -10,7 +10,8 @@ class MashAirdodge : public InputModifier {
     bool executingAirdodge;
 
   public:
-    MashAirdodge();
+    explicit MashAirdodge();
+    ~MashAirdodge();
     void modifyInput(Gamecube_Data_t *dataToModify);
     void cleanUp();
 };

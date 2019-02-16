@@ -9,18 +9,21 @@
 struct SingleInputDiff {
     ControllerInput input;
     int8_t valueDiff;
+    ~SingleInputDiff() {}
 };
 
 class InputDiff {
   private:
     long timeDiff;
     LinkedList<SingleInputDiff> *inputDiffs;
-    LinkedList<SingleInputDiff> *createDiffs(Gamecube_Data_t *firstData,
-                                             Gamecube_Data_t *secondData);
+    static LinkedList<SingleInputDiff> *
+    createDiffs(const Gamecube_Data_t &firstData,
+                const Gamecube_Data_t &secondData);
 
   public:
-    InputDiff(long timeDiff, Gamecube_Data_t *firstData,
-              Gamecube_Data_t *secondData);
+    explicit InputDiff(long timeDiff, Gamecube_Data_t &firstData,
+                       Gamecube_Data_t &secondData);
+    ~InputDiff();
 };
 
 #endif // GCTRAIN_RECORDING_INPUTDIFF_HPP_

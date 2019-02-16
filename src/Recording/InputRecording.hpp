@@ -13,7 +13,8 @@ class InputRecording : public InputModifier {
     LinkedList<InputDiff> *inputDiffs;
 
   public:
-    InputRecording();
+    explicit InputRecording();
+    ~InputRecording();
     void startRecording(Gamecube_Data_t *initialData);
     void modifyInput(Gamecube_Data_t *currentData);
     void cleanUp();

@@ -1,6 +1,8 @@
 #include "MashJump.hpp"
 
-MashJump::MashJump() { executingJump = false; }
+MashJump::MashJump() : executingJump(false) {}
+
+MashJump::~MashJump() {}
 
 void MashJump::modifyInput(Gamecube_Data_t *dataToModify) {
     if (executingJump) {

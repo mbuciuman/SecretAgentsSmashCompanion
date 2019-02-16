@@ -10,7 +10,7 @@
 #include "DI/NoDI.hpp"
 #include "DI/RandomDI.hpp"
 
-// EscapeOption imports
+// Escape Option imports
 #include "EscapeOption/MashAirdodge.hpp"
 #include "EscapeOption/MashJump.hpp"
 
@@ -29,21 +29,22 @@ CGamecubeController GamecubeController(CONTROLLER_DATA_PIN);
 CGamecubeConsole GamecubeConsole(CONSOLE_DATA_PIN);
 
 // DI vars
-LinkedList<InputModifier> *allDI;
+LinkedList<InputModifier> allDI;
 Iterator<InputModifier> *itDI;
 
 // Escape Option vars
-LinkedList<InputModifier> *allEscapeOptions;
+LinkedList<InputModifier> allEscapeOptions;
 Iterator<InputModifier> *itEscapeOption;
 
 // Input Playback vars
-LinkedList<InputModifier> *inputPlaybackOptions;
+LinkedList<InputModifier> inputPlaybackOptions;
 Iterator<InputModifier> *itInputPlayback;
 
 // Input Recording vars
-LinkedList<InputModifier> *inputRecordingOptions;
+LinkedList<InputModifier> inputRecordingOptions;
 Iterator<InputModifier> *itInputRecording;
 
+// Currently active input modifier (there's only one at a time)
 InputModifier *activeInputModifier;
 
 // Directional button states
@@ -52,14 +53,23 @@ bool rightPressed = false;
 bool downPressed = false;
 bool leftPressed = false;
 
-void checkInputChange(uint8_t input, bool *dirPressed,
-                      LinkedList<InputModifier> *modifiers,
+/**
+ * Checks to see if the given input has changed, then updates the active input
+ * modifier.
+ *
+ * @param input New value of the button
+ * @param dirPressed The previous state of the button
+ * @param modifiers The button's corresponding list of input modifiers
+ * @param it The iterator of the button's list of input modifiers
+ */
+void checkInputChange(uint8_t input, bool &dirPressed,
+                      LinkedList<InputModifier> &modifiers,
                       Iterator<InputModifier> *it) {
     if (input == 1) {
-        *dirPressed = true;
-    } else if (*dirPressed) {
+        dirPressed = true;
+    } else if (dirPressed) {
         activeInputModifier->cleanUp();
-        if (modifiers->contains(activeInputModifier)) {
+        if (modifiers.contains(activeInputModifier)) {
             if (!it->moveNext()) {
                 it->reset();
             }
@@ -67,40 +77,45 @@ void checkInputChange(uint8_t input, bool *dirPressed,
             it->reset();
         }
         activeInputModifier = it->current();
-        *dirPressed = false;
+        dirPressed = false;
     }
 }
 
+/**
+ * Iterates through DPad inputs, then updates the active input modifier.
+ */
 void detectInputChanges() {
     Gamecube_Report_t report = GamecubeController.getData().report;
-    checkInputChange(report.dup, &upPressed, inputPlaybackOptions,
+    checkInputChange(report.dup, upPressed, inputPlaybackOptions,
                      itInputPlayback);
-    checkInputChange(report.dright, &rightPressed, allEscapeOptions,
+    checkInputChange(report.dright, rightPressed, allEscapeOptions,
                      itEscapeOption);
-    checkInputChange(report.ddown, &downPressed, inputRecordingOptions,
+    checkInputChange(report.ddown, downPressed, inputRecordingOptions,
                      itInputRecording);
-    checkInputChange(report.dleft, &leftPressed, allDI, itDI);
+    checkInputChange(report.dleft, leftPressed, allDI, itDI);
 }
 
 void setup() {
-    allDI = new LinkedList<InputModifier>();
-    allDI->add(new NoDI());
-    allDI->add(new LeftRightDI());
-    allDI->add(new RandomDI());
-    itDI = allDI->it();
+    allDI = LinkedList<InputModifier>();
+    allDI.add(new NoDI());
+    allDI.add(new LeftRightDI());
+    allDI.add(new RandomDI());
+    itDI = allDI.it();
 
-    allEscapeOptions = new LinkedList<InputModifier>();
-    allEscapeOptions->add(new MashJump());
-    allEscapeOptions->add(new MashAirdodge());
-    itEscapeOption = allEscapeOptions->it();
+    allEscapeOptions = LinkedList<InputModifier>();
+    allEscapeOptions.add(new MashJump());
+    allEscapeOptions.add(new MashAirdodge());
+    itEscapeOption = allEscapeOptions.it();
 
-    inputRecordingOptions = new LinkedList<InputModifier>();
-    inputRecordingOptions->add(new NoInputRecording());
-    inputRecordingOptions->add(new InputRecording());
+    inputRecordingOptions = LinkedList<InputModifier>();
+    inputRecordingOptions.add(new NoInputRecording());
+    inputRecordingOptions.add(new InputRecording());
+    itInputRecording = inputRecordingOptions.it();
 
-    inputPlaybackOptions = new LinkedList<InputModifier>();
-    inputPlaybackOptions->add(new NoInputPlayback());
-    inputPlaybackOptions->add(new InputPlayback());
+    inputPlaybackOptions = LinkedList<InputModifier>();
+    inputPlaybackOptions.add(new NoInputPlayback());
+    inputPlaybackOptions.add(new InputPlayback());
+    itInputPlayback = inputPlaybackOptions.it();
 
     // Set up default starting modifier
     activeInputModifier = itDI->current();
