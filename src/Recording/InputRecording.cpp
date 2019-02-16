@@ -1,15 +1,14 @@
 #include "InputRecording.hpp"
 
 InputRecording::InputRecording()
-    : initialData(NULL), inputDiffs(new LinkedList<InputDiff>()) {}
+    : initialData(Gamecube_Data_t()), inputDiffs(new LinkedList<InputDiff>()) {}
 
-InputRecording::~InputRecording() {
-    delete initialData;
-    delete inputDiffs;
-}
+InputRecording::~InputRecording() { delete inputDiffs; }
 
-void InputRecording::startRecording(Gamecube_Data_t *initialData) {}
+void InputRecording::startRecording(Gamecube_Data_t &initialData) {}
 
-void InputRecording::modifyInput(Gamecube_Data_t *currentData) {}
+void InputRecording::modifyInput(Gamecube_Data_t &currentData) {}
+
+LinkedList<InputDiff> *InputRecording::getInputDiffs() { return inputDiffs; }
 
 void InputRecording::cleanUp() {}

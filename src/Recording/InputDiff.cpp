@@ -8,8 +8,8 @@ InputDiff::InputDiff(long timeDiff, Gamecube_Data_t &firstData,
 InputDiff::~InputDiff() { delete inputDiffs; }
 
 LinkedList<SingleInputDiff> *
-InputDiff::createDiffs(const Gamecube_Data_t &firstData,
-                       const Gamecube_Data_t &secondData) {
+InputDiff::createDiffs(Gamecube_Data_t &firstData,
+                       Gamecube_Data_t &secondData) {
     LinkedList<SingleInputDiff> *inputDiffsList =
         new LinkedList<SingleInputDiff>();
     if (firstData.report.a != secondData.report.a) {

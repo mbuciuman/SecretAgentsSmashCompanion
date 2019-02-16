@@ -7,7 +7,7 @@
 class NoInputPlayback : public InputModifier {
   public:
     ~NoInputPlayback();
-    void modifyInput(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
 

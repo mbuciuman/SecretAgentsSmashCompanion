@@ -2,7 +2,7 @@
 
 NoInputRecording::~NoInputRecording() {}
 
-void NoInputRecording::modifyInput(Gamecube_Data_t *dataToModify) {
+void NoInputRecording::modifyInput(Gamecube_Data_t &dataToModify) {
     // no Escape Option, so we leave all controller inputs the same
 }
 

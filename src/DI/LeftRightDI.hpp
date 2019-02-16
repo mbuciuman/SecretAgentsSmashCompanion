@@ -12,7 +12,7 @@ class LeftRightDI : public InputModifier {
 
   public:
     LeftRightDI();
-    void modifyInput(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
 

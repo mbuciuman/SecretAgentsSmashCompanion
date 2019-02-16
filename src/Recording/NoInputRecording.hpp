@@ -7,7 +7,7 @@
 class NoInputRecording : public InputModifier {
   public:
     ~NoInputRecording();
-    void modifyInput(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
 

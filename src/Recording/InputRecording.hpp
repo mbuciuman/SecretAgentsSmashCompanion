@@ -8,15 +8,15 @@
 
 class InputRecording : public InputModifier {
   private:
-    Gamecube_Data_t *initialData;
-    Gamecube_Data_t *currentData;
+    Gamecube_Data_t initialData;
+    Gamecube_Data_t currentData;
     LinkedList<InputDiff> *inputDiffs;
 
   public:
     explicit InputRecording();
     ~InputRecording();
-    void startRecording(Gamecube_Data_t *initialData);
-    void modifyInput(Gamecube_Data_t *currentData);
+    void startRecording(Gamecube_Data_t &initialData);
+    void modifyInput(Gamecube_Data_t &currentData);
     void cleanUp();
     LinkedList<InputDiff> *getInputDiffs();
 };

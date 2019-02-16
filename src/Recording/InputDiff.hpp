@@ -17,8 +17,7 @@ class InputDiff {
     long timeDiff;
     LinkedList<SingleInputDiff> *inputDiffs;
     static LinkedList<SingleInputDiff> *
-    createDiffs(const Gamecube_Data_t &firstData,
-                const Gamecube_Data_t &secondData);
+    createDiffs(Gamecube_Data_t &firstData, Gamecube_Data_t &secondData);
 
   public:
     explicit InputDiff(long timeDiff, Gamecube_Data_t &firstData,

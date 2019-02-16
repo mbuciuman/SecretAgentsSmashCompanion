@@ -6,7 +6,7 @@
 
 class NoDI : public InputModifier {
   public:
-    void modifyInput(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
 

@@ -8,14 +8,15 @@
 
 class InputPlayback : public InputModifier {
   private:
+    Gamecube_Data_t initialData;
     LinkedList<InputDiff> *inputDiffs;
 
   public:
     explicit InputPlayback();
     ~InputPlayback();
-    void initialize(Gamecube_Data_t *initialData,
+    void initialize(Gamecube_Data_t &initialData,
                     LinkedList<InputDiff> *inputDiffs);
-    void modifyInput(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
 

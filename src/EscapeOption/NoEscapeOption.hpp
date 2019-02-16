@@ -7,7 +7,7 @@
 class NoEscapeOption : public InputModifier {
   public:
     ~NoEscapeOption();
-    void modifyInput(Gamecube_Data_t *dataToModify);
+    void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
 
