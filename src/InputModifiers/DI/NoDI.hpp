@@ -1,5 +1,5 @@
-#ifndef GCTRAIN_DI_NODI_HPP_
-#define GCTRAIN_DI_NODI_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_DI_NODI_HPP_
+#define GCTRAIN_INPUTMODIFIERS_DI_NODI_HPP_
 
 #include "../InputModifier.hpp"
 #include <Nintendo.h>
@@ -10,4 +10,4 @@ class NoDI : public InputModifier {
     void cleanUp();
 };
 
-#endif // GCTRAIN_DI_NODI_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_DI_NODI_HPP_

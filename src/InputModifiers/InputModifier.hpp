@@ -1,5 +1,5 @@
-#ifndef GCTRAIN_INPUTMODIFIER_HPP_
-#define GCTRAIN_INPUTMODIFIER_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
+#define GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
 
 #include <Nintendo.h>
 
@@ -9,4 +9,4 @@ class InputModifier {
     virtual void modifyInput(Gamecube_Data_t &dataToModify) = 0;
     virtual void cleanUp() = 0;
 };
-#endif // GCTRAIN_INPUTMODIFIER_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_

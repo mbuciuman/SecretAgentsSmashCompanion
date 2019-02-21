@@ -1,124 +1,24 @@
-#include "InputModifier.hpp"
+#include "InputHandler.hpp"
 #include "constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 #include <iterator.h>
 #include <linked_list.h>
+#include <stdlib.h>
+#include <time.h>
 
-// DI imports
-#include "DI/LeftRightDI.hpp"
-#include "DI/NoDI.hpp"
-#include "DI/RandomDI.hpp"
+// Declare a Gamecube Controller
+CGamecubeController gcController(CONTROLLER_DATA_PIN);
 
-// Escape Option imports
-#include "EscapeOption/MashAirdodge.hpp"
-#include "EscapeOption/MashJump.hpp"
+// Declare Gamecube Console
+CGamecubeConsole gcConsole(CONSOLE_DATA_PIN);
 
-// Input Recording imports
-#include "Recording/InputRecording.hpp"
-#include "Recording/NoInputRecording.hpp"
-
-// Input Playback imports
-#include "Recording/InputPlayback.hpp"
-#include "Recording/NoInputPlayback.hpp"
-
-// Define a Gamecube Controller
-CGamecubeController GamecubeController(CONTROLLER_DATA_PIN);
-
-// Define Gamecube Console
-CGamecubeConsole GamecubeConsole(CONSOLE_DATA_PIN);
-
-// DI vars
-LinkedList<InputModifier> allDI;
-Iterator<InputModifier> *itDI;
-
-// Escape Option vars
-LinkedList<InputModifier> allEscapeOptions;
-Iterator<InputModifier> *itEscapeOption;
-
-// Input Playback vars
-LinkedList<InputModifier> inputPlaybackOptions;
-Iterator<InputModifier> *itInputPlayback;
-
-// Input Recording vars
-LinkedList<InputModifier> inputRecordingOptions;
-Iterator<InputModifier> *itInputRecording;
-
-// Currently active input modifier (there's only one at a time)
-InputModifier *activeInputModifier;
-
-// Directional button states
-bool upPressed = false;
-bool rightPressed = false;
-bool downPressed = false;
-bool leftPressed = false;
-
-/**
- * Checks to see if the given input has changed, then updates the active input
- * modifier.
- *
- * @param input New value of the button
- * @param dirPressed The previous state of the button
- * @param modifiers The button's corresponding list of input modifiers
- * @param it The iterator of the button's list of input modifiers
- */
-void checkInputChange(uint8_t input, bool &dirPressed,
-                      LinkedList<InputModifier> &modifiers,
-                      Iterator<InputModifier> *it) {
-    if (input == 1) {
-        dirPressed = true;
-    } else if (dirPressed) {
-        activeInputModifier->cleanUp();
-        if (modifiers.contains(activeInputModifier)) {
-            if (!it->moveNext()) {
-                it->reset();
-            }
-        } else {
-            it->reset();
-        }
-        activeInputModifier = it->current();
-        dirPressed = false;
-    }
-}
-
-/**
- * Iterates through DPad inputs, then updates the active input modifier.
- */
-void detectInputChanges() {
-    Gamecube_Report_t report = GamecubeController.getData().report;
-    checkInputChange(report.dup, upPressed, inputPlaybackOptions,
-                     itInputPlayback);
-    checkInputChange(report.dright, rightPressed, allEscapeOptions,
-                     itEscapeOption);
-    checkInputChange(report.ddown, downPressed, inputRecordingOptions,
-                     itInputRecording);
-    checkInputChange(report.dleft, leftPressed, allDI, itDI);
-}
+// Declare Input Handler
+InputHandler inputHander();
 
 void setup() {
-    allDI = LinkedList<InputModifier>();
-    allDI.add(new NoDI());
-    allDI.add(new LeftRightDI());
-    allDI.add(new RandomDI());
-    itDI = allDI.it();
-
-    allEscapeOptions = LinkedList<InputModifier>();
-    allEscapeOptions.add(new MashJump());
-    allEscapeOptions.add(new MashAirdodge());
-    itEscapeOption = allEscapeOptions.it();
-
-    inputRecordingOptions = LinkedList<InputModifier>();
-    inputRecordingOptions.add(new NoInputRecording());
-    inputRecordingOptions.add(new InputRecording());
-    itInputRecording = inputRecordingOptions.it();
-
-    inputPlaybackOptions = LinkedList<InputModifier>();
-    inputPlaybackOptions.add(new NoInputPlayback());
-    inputPlaybackOptions.add(new InputPlayback());
-    itInputPlayback = inputPlaybackOptions.it();
-
-    // Set up default starting modifier
-    activeInputModifier = itDI->current();
+    // seed random number generator
+    srand(time(NULL));
 
     // Set up debug led
     pinMode(PIN_LED, OUTPUT);
@@ -129,10 +29,9 @@ void setup() {
 
 void loop() {
     // Try to read the controller data
-    if (GamecubeController.read()) {
-        detectInputChanges();
+    if (gcController.read()) {
         // Mirror the controller data to the console
-        if (!GamecubeConsole.write(GamecubeController)) {
+        if (!gcConsole.write(gcController)) {
             Serial.println(F("Error writing Gamecube controller."));
             digitalWrite(PIN_LED, HIGH);
             delay(1000);

@@ -1,8 +1,8 @@
-#ifndef GCTRAIN_DI_RANDOMDI_HPP_
-#define GCTRAIN_DI_RANDOMDI_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_DI_RANDOMDI_HPP_
+#define GCTRAIN_INPUTMODIFIERS_DI_RANDOMDI_HPP_
 
+#include "../../constants.hpp"
 #include "../InputModifier.hpp"
-#include "../constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 
@@ -12,4 +12,4 @@ class RandomDI : public InputModifier {
     void cleanUp();
 };
 
-#endif // GCTRAIN_DI_RANDOMDI_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_DI_RANDOMDI_HPP_

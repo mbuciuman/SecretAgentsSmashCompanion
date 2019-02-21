@@ -1,5 +1,5 @@
-#ifndef GCTRAIN_RECORDING_INPUTRECORDING_HPP_
-#define GCTRAIN_RECORDING_INPUTRECORDING_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTRECORDING_HPP_
+#define GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTRECORDING_HPP_
 
 #include "../InputModifier.hpp"
 #include "InputDiff.hpp"
@@ -20,4 +20,4 @@ class InputRecording : public InputModifier {
     void cleanUp();
     LinkedList<InputDiff> *getInputDiffs();
 };
-#endif // GCTRAIN_RECORDING_INPUTRECORDING_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTRECORDING_HPP_

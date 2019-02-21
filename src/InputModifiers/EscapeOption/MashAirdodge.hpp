@@ -1,8 +1,8 @@
-#ifndef GCTRAIN_ESCAPEOPTION_MASHAIRDODGE_HPP_
-#define GCTRAIN_ESCAPEOPTION_MASHAIRDODGE_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_ESCAPEOPTION_MASHAIRDODGE_HPP_
+#define GCTRAIN_INPUTMODIFIERS_ESCAPEOPTION_MASHAIRDODGE_HPP_
 
+#include "../../constants.hpp"
 #include "../InputModifier.hpp"
-#include "../constants.hpp"
 #include <Nintendo.h>
 
 class MashAirdodge : public InputModifier {
@@ -16,4 +16,4 @@ class MashAirdodge : public InputModifier {
     void cleanUp();
 };
 
-#endif // GCTRAIN_ESCAPEOPTION_MASHAIRDODGE_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_ESCAPEOPTION_MASHAIRDODGE_HPP_

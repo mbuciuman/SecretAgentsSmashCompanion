@@ -1,7 +1,7 @@
-#ifndef GCTRAIN_RECORDING_INPUTDIFF_HPP_
-#define GCTRAIN_RECORDING_INPUTDIFF_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFF_HPP_
+#define GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFF_HPP_
 
-#include "../constants.hpp"
+#include "../../constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 #include <linked_list.h>
@@ -25,4 +25,4 @@ class InputDiff {
     ~InputDiff();
 };
 
-#endif // GCTRAIN_RECORDING_INPUTDIFF_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFF_HPP_

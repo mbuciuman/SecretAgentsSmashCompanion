@@ -1,8 +1,8 @@
-#ifndef GCTRAIN_DI_LEFTRIGHTDI_HPP_
-#define GCTRAIN_DI_LEFTRIGHTDI_HPP_
+#ifndef GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
+#define GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
 
+#include "../../constants.hpp"
 #include "../InputModifier.hpp"
-#include "../constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 
@@ -16,4 +16,4 @@ class LeftRightDI : public InputModifier {
     void cleanUp();
 };
 
-#endif // GCTRAIN_DI_LEFTRIGHTDI_HPP_
+#endif // GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
