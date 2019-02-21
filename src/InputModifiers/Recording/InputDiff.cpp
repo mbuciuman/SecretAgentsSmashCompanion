@@ -1,26 +1,43 @@
 #include "InputDiff.hpp"
 
-InputDiff::InputDiff(long timeDiff, Gamecube_Data_t &firstData,
-                     Gamecube_Data_t &secondData)
-    : timeDiff(timeDiff),
-      inputDiffs(InputDiff::createDiffs(firstData, secondData)) {}
+InputDiff::InputDiff(long timeDiff, Gamecube_Report_t &firstReport,
+                     Gamecube_Report_t &secondReport)
+    : timeDiff(timeDiff), inputDiffs(new LinkedList<SingleInputDiff>()) {
+    initialize(firstReport, secondReport);
+}
 
 InputDiff::~InputDiff() { delete inputDiffs; }
 
-LinkedList<SingleInputDiff> *
-InputDiff::createDiffs(Gamecube_Data_t &firstData,
-                       Gamecube_Data_t &secondData) {
-    LinkedList<SingleInputDiff> *inputDiffsList =
-        new LinkedList<SingleInputDiff>();
-    if (firstData.report.a != secondData.report.a) {
-        uint8_t firstA = firstData.report.a;
-        uint8_t secondA = secondData.report.a;
-        int8_t diff = (int8_t)secondA - (int8_t)firstA;
+void InputDiff::initialize(Gamecube_Report_t &firstReport,
+                           Gamecube_Report_t &secondReport) {
+    addDiffIfDifferent(firstReport.a, secondReport.a, ControllerInput::A);
+    addDiffIfDifferent(firstReport.b, secondReport.b, ControllerInput::B);
+    addDiffIfDifferent(firstReport.x, secondReport.x, ControllerInput::X);
+    addDiffIfDifferent(firstReport.y, secondReport.y, ControllerInput::Y);
+    addDiffIfDifferent(firstReport.z, secondReport.z, ControllerInput::Z);
+    addDiffIfDifferent(firstReport.l, secondReport.l, ControllerInput::L);
+    addDiffIfDifferent(firstReport.left, secondReport.left,
+                       ControllerInput::L_ANALOG);
+    addDiffIfDifferent(firstReport.r, secondReport.r, ControllerInput::R);
+    addDiffIfDifferent(firstReport.right, secondReport.right,
+                       ControllerInput::R_ANALOG);
+    addDiffIfDifferent(firstReport.xAxis, secondReport.xAxis,
+                       ControllerInput::XAXIS);
+    addDiffIfDifferent(firstReport.yAxis, secondReport.yAxis,
+                       ControllerInput::YAXIS);
+    addDiffIfDifferent(firstReport.cxAxis, secondReport.cxAxis,
+                       ControllerInput::C_XAXIS);
+    addDiffIfDifferent(firstReport.cyAxis, secondReport.cyAxis,
+                       ControllerInput::C_YAXIS);
+}
+
+void InputDiff::addDiffIfDifferent(uint8_t firstVal, uint8_t secondVal,
+                                   ControllerInput input) {
+    if (firstVal != secondVal) {
+        int8_t diff = (int8_t)firstVal - (int8_t)secondVal;
         SingleInputDiff *singleInputDiff = new SingleInputDiff;
-        singleInputDiff->input = ControllerInput::A;
+        singleInputDiff->input = input;
         singleInputDiff->valueDiff = diff;
-        inputDiffsList->add(singleInputDiff);
+        inputDiffs->add(singleInputDiff);
     }
-    // TODO: add other buttons
-    return inputDiffsList;
 }

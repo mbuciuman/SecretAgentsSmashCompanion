@@ -1,4 +1,4 @@
-#include "Recording/InputRecording.hpp"
+#include "../src/InputModifiers/Recording/InputRecording.hpp"
 #include <Arduino.h>
 
 void setUp(void) {

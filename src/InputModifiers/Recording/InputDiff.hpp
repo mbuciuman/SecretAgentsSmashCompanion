@@ -16,12 +16,14 @@ class InputDiff {
   private:
     long timeDiff;
     LinkedList<SingleInputDiff> *inputDiffs;
-    static LinkedList<SingleInputDiff> *
-    createDiffs(Gamecube_Data_t &firstData, Gamecube_Data_t &secondData);
+    void initialize(Gamecube_Report_t &firstReport,
+                    Gamecube_Report_t &secondReport);
+    void addDiffIfDifferent(uint8_t firstVal, uint8_t secondVal,
+                            ControllerInput input);
 
   public:
-    explicit InputDiff(long timeDiff, Gamecube_Data_t &firstData,
-                       Gamecube_Data_t &secondData);
+    explicit InputDiff(long timeDiff, Gamecube_Report_t &firstReport,
+                       Gamecube_Report_t &secondReport);
     ~InputDiff();
 };
 

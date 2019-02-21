@@ -14,7 +14,7 @@ CGamecubeController gcController(CONTROLLER_DATA_PIN);
 CGamecubeConsole gcConsole(CONSOLE_DATA_PIN);
 
 // Declare Input Handler
-InputHandler inputHander();
+InputHandler inputHandler = InputHandler();
 
 void setup() {
     // seed random number generator
@@ -30,8 +30,14 @@ void setup() {
 void loop() {
     // Try to read the controller data
     if (gcController.read()) {
-        // Mirror the controller data to the console
-        if (!gcConsole.write(gcController)) {
+
+        // Copy the controller data and send it to the input handler for
+        // processing
+        Gamecube_Data_t gcData = gcController.getData();
+        inputHandler.processInput(gcData);
+
+        // Send the modified data to the console
+        if (!gcConsole.write(gcData)) {
             Serial.println(F("Error writing Gamecube controller."));
             digitalWrite(PIN_LED, HIGH);
             delay(1000);

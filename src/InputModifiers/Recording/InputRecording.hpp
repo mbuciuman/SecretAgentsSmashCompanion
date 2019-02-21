@@ -9,14 +9,18 @@
 class InputRecording : public InputModifier {
   private:
     Gamecube_Data_t initialData;
+    Gamecube_Data_t previousData;
     Gamecube_Data_t currentData;
+    unsigned long previousTime;
     LinkedList<InputDiff> *inputDiffs;
 
   public:
     explicit InputRecording();
     ~InputRecording();
-    void startRecording(Gamecube_Data_t &initialData);
+    void startRecording(Gamecube_Data_t initialData);
     void modifyInput(Gamecube_Data_t &currentData);
+    bool newDataEqualsOld();
+    void createNewDiff();
     void cleanUp();
     LinkedList<InputDiff> *getInputDiffs();
 };

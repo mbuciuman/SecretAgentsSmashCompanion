@@ -12,7 +12,6 @@ InputHandler::InputHandler()
     allDI.add(new NoDI());
     allDI.add(new LeftRightDI());
     allDI.add(new RandomDI());
-    itDI = allDI.it();
 
     allEscapeOptions.add(new NoEscapeOption());
     allEscapeOptions.add(new MashJump());
@@ -24,7 +23,7 @@ InputHandler::InputHandler()
     inputPlaybackOptions.add(new NoInputPlayback());
     inputPlaybackOptions.add(new InputPlayback());
 
-    // Set up default starting modifier
+    // Set up starting active input modifier
     activeInputModifier = itDI->current();
 }
 
@@ -33,6 +32,7 @@ InputHandler::InputHandler()
  */
 void InputHandler::processInput(Gamecube_Data_t &data) {
     updateCurrentState(data.report);
+    activeInputModifier->modifyInput(data);
 }
 
 /**
