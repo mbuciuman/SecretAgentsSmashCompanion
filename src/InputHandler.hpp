@@ -22,21 +22,17 @@ class InputHandler {
     bool downPressed;
     bool leftPressed;
 
-    // DI vars
-    LinkedList<InputModifier> allDI;
-    Iterator<InputModifier> *itDI;
+    LinkedList<InputModifier> leftModifiers;
+    Iterator<InputModifier> *itLeft;
 
-    // Escape Option vars
-    LinkedList<InputModifier> allEscapeOptions;
-    Iterator<InputModifier> *itEscapeOption;
+    LinkedList<InputModifier> upModifiers;
+    Iterator<InputModifier> *itUp;
 
-    // Input Recording vars
-    LinkedList<InputModifier> inputRecordingOptions;
-    Iterator<InputModifier> *itInputRecording;
+    LinkedList<InputModifier> rightModifiers;
+    Iterator<InputModifier> *itRight;
 
-    // Input Playback vars
-    LinkedList<InputModifier> inputPlaybackOptions;
-    Iterator<InputModifier> *itInputPlayback;
+    LinkedList<InputModifier> downModifiers;
+    Iterator<InputModifier> *itDown;
 
     // Currently active input modifier (there's only one at a time)
     InputModifier *activeInputModifier;

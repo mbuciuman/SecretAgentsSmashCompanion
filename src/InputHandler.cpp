@@ -2,29 +2,33 @@
 
 InputHandler::InputHandler()
     : upPressed(false), rightPressed(false), downPressed(false),
-      leftPressed(false), allDI(LinkedList<InputModifier>()), itDI(allDI.it()),
-      allEscapeOptions(LinkedList<InputModifier>()),
-      itEscapeOption(allEscapeOptions.it()),
-      inputRecordingOptions(LinkedList<InputModifier>()),
-      itInputRecording(inputRecordingOptions.it()),
-      inputPlaybackOptions(LinkedList<InputModifier>()),
-      itInputPlayback(inputPlaybackOptions.it()) {
-    allDI.add(new NoDI());
-    allDI.add(new LeftRightDI());
-    allDI.add(new RandomDI());
+      leftPressed(false), leftModifiers(LinkedList<InputModifier>()),
+      itLeft(leftModifiers.it()), upModifiers(LinkedList<InputModifier>()),
+      itUp(upModifiers.it()), rightModifiers(LinkedList<InputModifier>()),
+      itRight(rightModifiers.it()), downModifiers(LinkedList<InputModifier>()),
+      itDown(downModifiers.it()) {
 
-    allEscapeOptions.add(new NoEscapeOption());
-    allEscapeOptions.add(new MashJump());
-    allEscapeOptions.add(new MashAirdodge());
+    // add DI modifiers to left DPad
+    leftModifiers.add(new NoDI());
+    leftModifiers.add(new LeftRightDI());
+    leftModifiers.add(new RandomDI());
 
-    inputRecordingOptions.add(new NoInputRecording());
-    inputRecordingOptions.add(new InputRecording());
+    // add Escape Options to right DPad
+    rightModifiers.add(new NoEscapeOption());
+    rightModifiers.add(new MashJump());
+    rightModifiers.add(new MashAirdodge());
 
-    inputPlaybackOptions.add(new NoInputPlayback());
-    inputPlaybackOptions.add(new InputPlayback());
+    // add input recording to down DPad
+    downModifiers.add(new NoInputRecording());
+    InputRecording *inputRecording = new InputRecording();
+    downModifiers.add(inputRecording);
+
+    // add input playback to up DPad
+    upModifiers.add(new NoInputPlayback());
+    upModifiers.add(new InputPlayback(inputRecording));
 
     // Set up starting active input modifier
-    activeInputModifier = itDI->current();
+    activeInputModifier = itLeft->current();
 }
 
 /**
@@ -40,17 +44,17 @@ void InputHandler::processInput(Gamecube_Data_t &data) {
  */
 void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     // update active input modifier based on DPad changes
+    if (directionReleased(report.dleft, leftPressed)) {
+        updateActiveInputModifier(leftModifiers, itLeft);
+    }
     if (directionReleased(report.dup, upPressed)) {
-        updateActiveInputModifier(inputPlaybackOptions, itInputPlayback);
+        updateActiveInputModifier(upModifiers, itUp);
     }
     if (directionReleased(report.dright, rightPressed)) {
-        updateActiveInputModifier(allEscapeOptions, itEscapeOption);
+        updateActiveInputModifier(rightModifiers, itRight);
     }
     if (directionReleased(report.ddown, downPressed)) {
-        updateActiveInputModifier(inputRecordingOptions, itInputRecording);
-    }
-    if (directionReleased(report.dleft, leftPressed)) {
-        updateActiveInputModifier(allDI, itDI);
+        updateActiveInputModifier(downModifiers, itDown);
     }
 }
 
