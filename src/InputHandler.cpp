@@ -1,35 +1,11 @@
 #include "InputHandler.hpp"
 
 InputHandler::InputHandler()
-    : upPressed(false), rightPressed(false), downPressed(false),
-      leftPressed(false), leftModifiers(LinkedList<InputModifier>()),
-      itLeft(leftModifiers.it()), upModifiers(LinkedList<InputModifier>()),
-      itUp(upModifiers.it()), rightModifiers(LinkedList<InputModifier>()),
-      itRight(rightModifiers.it()), downModifiers(LinkedList<InputModifier>()),
-      itDown(downModifiers.it()) {
-
-    // add DI modifiers to left DPad
-    leftModifiers.add(new NoDI());
-    leftModifiers.add(new LeftRightDI());
-    leftModifiers.add(new RandomDI());
-
-    // add Escape Options to right DPad
-    rightModifiers.add(new NoEscapeOption());
-    rightModifiers.add(new MashJump());
-    rightModifiers.add(new MashAirdodge());
-
-    // add input recording to down DPad
-    downModifiers.add(new NoInputRecording());
-    InputRecording *inputRecording = new InputRecording();
-    downModifiers.add(inputRecording);
-
-    // add input playback to up DPad
-    upModifiers.add(new NoInputPlayback());
-    upModifiers.add(new InputPlayback(inputRecording));
-
-    // Set up starting active input modifier
-    activeInputModifier = itLeft->current();
-}
+    : leftPressed(false), upPressed(false), rightPressed(false),
+      downPressed(false), currentIndex(0), currentDirection(Direction::NO_DIR),
+      leftModifiers{&leftRightDI, &randomDI}, upModifiers{&inputPlayback},
+      rightModifiers{&mashJump, &mashAirdodge}, downModifiers{&inputRecording},
+      activeInputModifier(&noModifier) {}
 
 /**
  * Given a controller's data, modifies it based on the active input modifier
@@ -45,16 +21,23 @@ void InputHandler::processInput(Gamecube_Data_t &data) {
 void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     // update active input modifier based on DPad changes
     if (directionReleased(report.dleft, leftPressed)) {
-        updateActiveInputModifier(leftModifiers, itLeft);
+        Serial.println(F("le_re"));
+        updateActiveInputModifier(Direction::LEFT, leftModifiers,
+                                  LEFT_MOD_SIZE);
     }
     if (directionReleased(report.dup, upPressed)) {
-        updateActiveInputModifier(upModifiers, itUp);
+        Serial.println(F("up_re"));
+        updateActiveInputModifier(Direction::UP, upModifiers, UP_MOD_SIZE);
     }
     if (directionReleased(report.dright, rightPressed)) {
-        updateActiveInputModifier(rightModifiers, itRight);
+        Serial.println(F("ri_re"));
+        updateActiveInputModifier(Direction::RIGHT, rightModifiers,
+                                  RIGHT_MOD_SIZE);
     }
     if (directionReleased(report.ddown, downPressed)) {
-        updateActiveInputModifier(downModifiers, itDown);
+        Serial.println(F("do_re"));
+        updateActiveInputModifier(Direction::DOWN, downModifiers,
+                                  DOWN_MOD_SIZE);
     }
 }
 
@@ -77,26 +60,44 @@ bool InputHandler::directionReleased(uint8_t input, bool &dirPressed) {
  * Update the active input modifier given the list of input modifiers and its
  * iterator
  */
-void InputHandler::updateActiveInputModifier(
-    LinkedList<InputModifier> &modifiers, Iterator<InputModifier> *it) {
+void InputHandler::updateActiveInputModifier(Direction newDirection,
+                                             InputModifier *modifiers[],
+                                             const uint8_t &maxArraySize) {
     activeInputModifier->cleanUp();
-    activeInputModifier = getNextModifier(modifiers, it);
+    activeInputModifier =
+        getNextModifier(newDirection, modifiers, maxArraySize);
 }
 
 /**
  * Get the next input modifier from the given list and its current iterator
  */
-InputModifier *
-InputHandler::getNextModifier(LinkedList<InputModifier> &modifiers,
-                              Iterator<InputModifier> *it) {
-    if (modifiers.contains(activeInputModifier)) {
-        // return the next input modifier in the given list
-        if (!it->moveNext()) {
-            it->reset();
+InputModifier *InputHandler::getNextModifier(Direction newDirection,
+                                             InputModifier *modifiers[],
+                                             const uint8_t &maxArraySize) {
+    if (currentDirection == newDirection) {
+#ifdef DEBUG
+        Serial.println(F("Current direction equals new direction"));
+#endif
+        if (currentIndex + 1 < maxArraySize) {
+#ifdef DEBUG
+            Serial.println(F("Advancing"));
+#endif
+            currentIndex++;
+            return modifiers[currentIndex];
+        } else {
+#ifdef DEBUG
+            Serial.println(F("Reached end of direction, RESETTING"));
+#endif
+            currentDirection = Direction::NO_DIR;
+            currentIndex = 0;
+            return &noModifier;
         }
     } else {
-        // return the first input modifier in the given list
-        it->reset();
+#ifdef DEBUG
+        Serial.println(F("New direction is diferent from current direction!"));
+#endif
+        currentDirection = newDirection;
+        currentIndex = 0;
+        return modifiers[currentIndex];
     }
-    return it->current();
 }

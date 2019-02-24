@@ -5,19 +5,17 @@
 #include "InputDiff.hpp"
 #include "InputRecording.hpp"
 #include <Nintendo.h>
-#include <linked_list.h>
 
 class InputPlayback : public InputModifier {
   private:
     Gamecube_Data_t initialData;
     bool playingBack;
-    unsigned long timeElapsed;
-    InputRecording *inputRecording;
-    Iterator<InputDiff> *itDiff;
+    uint16_t timeElapsed;
+    uint8_t currInputDiff;
+    InputDiffStore &inputDiffStore;
 
   public:
-    explicit InputPlayback(InputRecording *inputRecording);
-    ~InputPlayback();
+    explicit InputPlayback(InputDiffStore &inputDiffStore);
     void initialize(Gamecube_Data_t &initialData);
     void modifyInput(Gamecube_Data_t &dataToModify);
     bool canApplyNextDiff();

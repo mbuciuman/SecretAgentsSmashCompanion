@@ -11,7 +11,6 @@ class MashAirdodge : public InputModifier {
 
   public:
     explicit MashAirdodge();
-    ~MashAirdodge();
     void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };

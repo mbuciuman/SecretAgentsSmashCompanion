@@ -4,31 +4,28 @@
 #include "../../constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
-#include <linked_list.h>
 
 struct SingleInputDiff {
     ControllerInput input;
     int16_t valueDiff;
-    ~SingleInputDiff() {}
+    void applyTo(Gamecube_Data_t &dataToModify);
 };
 
 class InputDiff {
   private:
-    unsigned long timeDiff;
-    LinkedList<SingleInputDiff> *singleDiffs;
-    void initialize(Gamecube_Report_t &firstReport,
+    uint16_t timeDiff;
+    SingleInputDiff singleDiffs[(uint8_t)ControllerInput::TOTAL_INPUTS];
+    void storeDiffs(Gamecube_Report_t &firstReport,
                     Gamecube_Report_t &secondReport);
-    void addDiffIfDifferent(uint8_t firstVal, uint8_t secondVal,
-                            ControllerInput input);
+    void storeSingleDiff(uint8_t firstVal, uint8_t secondVal,
+                         ControllerInput input);
 
   public:
-    explicit InputDiff(long timeDiff, Gamecube_Report_t &firstReport,
-                       Gamecube_Report_t &secondReport);
-    unsigned long getTimeDiff();
-    void applyDiff(Gamecube_Data_t &dataToModify);
-    void applySingleDiff(SingleInputDiff *singleDiff,
-                         Gamecube_Data_t &dataToModify);
-    ~InputDiff();
+    explicit InputDiff();
+    uint16_t getTimeDiff();
+    void initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
+                    Gamecube_Report_t &secondReport);
+    void applyTo(Gamecube_Data_t &dataToModify);
 };
 
 #endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFF_HPP_

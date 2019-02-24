@@ -2,9 +2,8 @@
 
 MashJump::MashJump() : executingJump(false) {}
 
-MashJump::~MashJump() {}
-
 void MashJump::modifyInput(Gamecube_Data_t &dataToModify) {
+    Serial.println(F("mj_mi"));
     if (executingJump) {
         // toggle jump off if executing jump
         dataToModify.report.x = 0;

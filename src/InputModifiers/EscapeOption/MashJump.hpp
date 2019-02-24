@@ -10,7 +10,6 @@ class MashJump : public InputModifier {
 
   public:
     explicit MashJump();
-    ~MashJump();
     void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };

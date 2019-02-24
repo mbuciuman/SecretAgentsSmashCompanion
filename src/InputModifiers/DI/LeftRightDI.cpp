@@ -3,6 +3,7 @@
 LeftRightDI::LeftRightDI() { prevDirection = Direction::LEFT; }
 
 void LeftRightDI::modifyInput(Gamecube_Data_t &dataToModify) {
+    Serial.println(F("lrdi_mi"));
     if (prevDirection == Direction::LEFT) {
         dataToModify.report.xAxis = MAX_AXIS_VAL;
         prevDirection = Direction::RIGHT;

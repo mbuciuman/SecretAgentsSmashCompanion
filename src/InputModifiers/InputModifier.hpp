@@ -5,7 +5,6 @@
 
 class InputModifier {
   public:
-    virtual ~InputModifier() = 0;
     virtual void modifyInput(Gamecube_Data_t &dataToModify) = 0;
     virtual void cleanUp() = 0;
 };

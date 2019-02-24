@@ -2,27 +2,28 @@
 #define GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTRECORDING_HPP_
 
 #include "../InputModifier.hpp"
-#include "InputDiff.hpp"
+#include "InputDiffStore.hpp"
 #include <Nintendo.h>
-#include <linked_list.h>
 
 class InputRecording : public InputModifier {
   private:
     Gamecube_Data_t initialData;
     Gamecube_Data_t previousData;
     Gamecube_Data_t currentData;
-    unsigned long previousTime;
+    uint16_t previousTime;
     bool recording;
-    LinkedList<InputDiff> *inputDiffs;
+    InputDiffStore inputDiffStore;
 
   public:
     explicit InputRecording();
-    ~InputRecording();
     void startRecording(Gamecube_Data_t initialData);
     void modifyInput(Gamecube_Data_t &currentData);
     bool currentDataEqualsPrevious();
     void createNewDiff();
+#ifdef DEBUG
+    void printReport(Gamecube_Report_t &report);
+#endif
     void cleanUp();
-    LinkedList<InputDiff> *getInputDiffs();
+    InputDiffStore &getInputDiffStore();
 };
 #endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTRECORDING_HPP_

@@ -1,102 +1,92 @@
 #include "InputDiff.hpp"
 
-InputDiff::InputDiff(long timeDiff, Gamecube_Report_t &firstReport,
-                     Gamecube_Report_t &secondReport)
-    : timeDiff(timeDiff), singleDiffs(new LinkedList<SingleInputDiff>()) {
-    initialize(firstReport, secondReport);
-}
+InputDiff::InputDiff() : timeDiff(0), singleDiffs{} {}
 
-InputDiff::~InputDiff() { delete singleDiffs; }
-
-void InputDiff::initialize(Gamecube_Report_t &firstReport,
+void InputDiff::initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
                            Gamecube_Report_t &secondReport) {
-    addDiffIfDifferent(firstReport.a, secondReport.a, ControllerInput::A);
-    addDiffIfDifferent(firstReport.b, secondReport.b, ControllerInput::B);
-    addDiffIfDifferent(firstReport.x, secondReport.x, ControllerInput::X);
-    addDiffIfDifferent(firstReport.y, secondReport.y, ControllerInput::Y);
-    addDiffIfDifferent(firstReport.z, secondReport.z, ControllerInput::Z);
-    addDiffIfDifferent(firstReport.l, secondReport.l, ControllerInput::L);
-    addDiffIfDifferent(firstReport.left, secondReport.left,
-                       ControllerInput::L_ANALOG);
-    addDiffIfDifferent(firstReport.r, secondReport.r, ControllerInput::R);
-    addDiffIfDifferent(firstReport.right, secondReport.right,
-                       ControllerInput::R_ANALOG);
-    addDiffIfDifferent(firstReport.xAxis, secondReport.xAxis,
-                       ControllerInput::XAXIS);
-    addDiffIfDifferent(firstReport.yAxis, secondReport.yAxis,
-                       ControllerInput::YAXIS);
-    addDiffIfDifferent(firstReport.cxAxis, secondReport.cxAxis,
-                       ControllerInput::C_XAXIS);
-    addDiffIfDifferent(firstReport.cyAxis, secondReport.cyAxis,
-                       ControllerInput::C_YAXIS);
+    this->timeDiff = timeDiff;
+    storeDiffs(firstReport, secondReport);
 }
 
-void InputDiff::addDiffIfDifferent(uint8_t firstVal, uint8_t secondVal,
-                                   ControllerInput input) {
-    if (firstVal != secondVal) {
-        int16_t diff = (int16_t)firstVal - (int16_t)secondVal;
-        SingleInputDiff *singleInputDiff = new SingleInputDiff;
-        singleInputDiff->input = input;
-        singleInputDiff->valueDiff = diff;
-        singleDiffs->add(singleInputDiff);
+void InputDiff::storeDiffs(Gamecube_Report_t &firstReport,
+                           Gamecube_Report_t &secondReport) {
+    storeSingleDiff(firstReport.a, secondReport.a, ControllerInput::A);
+    storeSingleDiff(firstReport.b, secondReport.b, ControllerInput::B);
+    storeSingleDiff(firstReport.x, secondReport.x, ControllerInput::X);
+    storeSingleDiff(firstReport.y, secondReport.y, ControllerInput::Y);
+    storeSingleDiff(firstReport.z, secondReport.z, ControllerInput::Z);
+    storeSingleDiff(firstReport.l, secondReport.l, ControllerInput::L);
+    storeSingleDiff(firstReport.left, secondReport.left,
+                    ControllerInput::L_ANALOG);
+    storeSingleDiff(firstReport.r, secondReport.r, ControllerInput::R);
+    storeSingleDiff(firstReport.right, secondReport.right,
+                    ControllerInput::R_ANALOG);
+    storeSingleDiff(firstReport.xAxis, secondReport.xAxis,
+                    ControllerInput::XAXIS);
+    storeSingleDiff(firstReport.yAxis, secondReport.yAxis,
+                    ControllerInput::YAXIS);
+    storeSingleDiff(firstReport.cxAxis, secondReport.cxAxis,
+                    ControllerInput::C_XAXIS);
+    storeSingleDiff(firstReport.cyAxis, secondReport.cyAxis,
+                    ControllerInput::C_YAXIS);
+}
+
+void InputDiff::storeSingleDiff(uint8_t firstVal, uint8_t secondVal,
+                                ControllerInput input) {
+    int16_t diff = (int16_t)firstVal - (int16_t)secondVal;
+    this->singleDiffs[(int)input] = (SingleInputDiff){input, diff};
+}
+
+uint16_t InputDiff::getTimeDiff() { return timeDiff; }
+
+void InputDiff::applyTo(Gamecube_Data_t &dataToModify) {
+    for (int i = 0; i < (int)ControllerInput::TOTAL_INPUTS; i++) {
+        singleDiffs[i].applyTo(dataToModify);
     }
 }
 
-unsigned long InputDiff::getTimeDiff() { return timeDiff; }
-
-void InputDiff::applyDiff(Gamecube_Data_t &dataToModify) {
-    Iterator<SingleInputDiff> *itSIDiff = singleDiffs->it();
-    SingleInputDiff *singleDiff = itSIDiff->current();
-    while (singleDiff != nullptr) {
-        applySingleDiff(singleDiff, dataToModify);
-        itSIDiff->moveNext();
-        singleDiff = itSIDiff->current();
-    }
-}
-
-void InputDiff::applySingleDiff(SingleInputDiff *singleDiff,
-                                Gamecube_Data_t &dataToModify) {
-    switch (singleDiff->input) {
+void SingleInputDiff::applyTo(Gamecube_Data_t &dataToModify) {
+    switch (input) {
     case ControllerInput::A:
-        dataToModify.report.a += singleDiff->valueDiff;
+        dataToModify.report.a += valueDiff;
         break;
     case ControllerInput::B:
-        dataToModify.report.b += singleDiff->valueDiff;
+        dataToModify.report.b += valueDiff;
         break;
     case ControllerInput::X:
-        dataToModify.report.x += singleDiff->valueDiff;
+        dataToModify.report.x += valueDiff;
         break;
     case ControllerInput::Y:
-        dataToModify.report.y += singleDiff->valueDiff;
+        dataToModify.report.y += valueDiff;
         break;
     case ControllerInput::Z:
-        dataToModify.report.z += singleDiff->valueDiff;
+        dataToModify.report.z += valueDiff;
         break;
     case ControllerInput::L:
-        dataToModify.report.l += singleDiff->valueDiff;
+        dataToModify.report.l += valueDiff;
         break;
     case ControllerInput::L_ANALOG:
-        dataToModify.report.left += singleDiff->valueDiff;
+        dataToModify.report.left += valueDiff;
         break;
     case ControllerInput::R:
-        dataToModify.report.r += singleDiff->valueDiff;
+        dataToModify.report.r += valueDiff;
         break;
     case ControllerInput::R_ANALOG:
-        dataToModify.report.right += singleDiff->valueDiff;
+        dataToModify.report.right += valueDiff;
         break;
     case ControllerInput::XAXIS:
-        dataToModify.report.xAxis += singleDiff->valueDiff;
+        dataToModify.report.xAxis += valueDiff;
         break;
     case ControllerInput::YAXIS:
-        dataToModify.report.yAxis += singleDiff->valueDiff;
+        dataToModify.report.yAxis += valueDiff;
         break;
     case ControllerInput::C_XAXIS:
-        dataToModify.report.cxAxis += singleDiff->valueDiff;
+        dataToModify.report.cxAxis += valueDiff;
         break;
     case ControllerInput::C_YAXIS:
-        dataToModify.report.cyAxis += singleDiff->valueDiff;
+        dataToModify.report.cyAxis += valueDiff;
         break;
     default:
-        Serial.print("Invalid controller input!");
+        Serial.print(F("Invalid controller input!"));
     }
 }
