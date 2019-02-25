@@ -4,7 +4,7 @@
 #include "InputDiff.hpp"
 #include <Nintendo.h>
 
-#define MAX_STORE_SIZE 14
+static const uint8_t MAX_STORE_SIZE = 28;
 
 class InputDiffStore {
   private:

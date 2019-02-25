@@ -124,19 +124,12 @@ void loop() {
 
 #ifndef DEBUG
 
-int freeRam() {
-    extern int __heap_start, *__brkval;
-    int v;
-    return (int)&v - (__brkval == 0 ? (int)&__heap_start : (int)__brkval);
-}
-
 void loop() {
     // Try to read the controller data
     if (gcController.read()) {
         // Print Controller information
         auto data = gcController.getData();
         inputHandler.processInput(data);
-        Serial.println(freeRam());
         delay(10);
     } else {
         // Add debounce if reading failed
