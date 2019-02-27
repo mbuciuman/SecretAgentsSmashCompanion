@@ -50,17 +50,15 @@ void InputPlayback::modifyInput(Gamecube_Data_t &dataToModify) {
 }
 
 bool InputPlayback::nextDiffExists() {
-    return currInputDiff < inputDiffStore.getTotalDiffs() - 1;
+    return currInputDiff < inputDiffStore.getTotalDiffs();
 }
 
 bool InputPlayback::canApplyNextDiff() {
-    return timeElapsed >
-           inputDiffStore.getDiff(currInputDiff + 1).getTimeDiff();
+    return timeElapsed > inputDiffStore.getDiff(currInputDiff).getTimeDiff();
 }
 
 void InputPlayback::applyNextDiff(Gamecube_Data_t &dataToModify) {
     inputDiffStore.getDiff(currInputDiff).applyTo(dataToModify);
-    InputDiff nextDiff = inputDiffStore.getDiff(currInputDiff + 1);
     currInputDiff++;
 }
 

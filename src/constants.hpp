@@ -50,4 +50,7 @@ static const uint8_t MAX_STORE_SIZE = 10;
 // uncommenting enables heavy serial logging
 //#define DEBUG
 
+// uncommenting enables Gamecube writing
+#define WRITE
+
 #endif // GCTRAIN_CONSTANTS_HPP_

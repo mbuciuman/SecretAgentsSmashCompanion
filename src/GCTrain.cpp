@@ -33,12 +33,14 @@ void loop() {
         // Print Controller information
         auto data = gcController.getData();
         inputHandler.processInput(data);
+#ifdef WRITE
         if (!gcConsole.write(data)) {
 #ifdef DEBUG
             Serial.println(F("ERRWRITE"));
 #endif
             delay(100);
         }
+#endif
     } else {
         // Add debounce if reading failed
 #ifdef DEBUG

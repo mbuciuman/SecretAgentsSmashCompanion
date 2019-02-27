@@ -13,7 +13,7 @@ void InputRecording::startRecording(Gamecube_Data_t initialData) {
     this->initialData = initialData;
     this->previousData = initialData;
     timeElapsed = 0;
-    previousTime = 0;
+    previousTime = millis();
     recording = true;
 }
 
