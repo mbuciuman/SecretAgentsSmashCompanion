@@ -27,18 +27,27 @@ enum class ControllerInput : uint8_t {
 };
 
 // Pin definitions
-const uint8_t LED_PIN = LED_BUILTIN;
-const uint8_t CONTROLLER_DATA_PIN = 3;
-const uint8_t CONSOLE_DATA_PIN = 5;
+static const uint8_t LED_PIN = LED_BUILTIN;
+static const uint8_t CONTROLLER_DATA_PIN = 3;
+static const uint8_t CONSOLE_DATA_PIN = 4;
 
 // according to 'Yet Another Gamecube Documentation.htm', min/max values for
 // axis
-const uint8_t MIN_AXIS_VAL = 32;
-const uint8_t MAX_AXIS_VAL = 234;
-const uint8_t AVG_AXIS_VAL = 127;
+static const uint8_t MIN_AXIS_VAL = 32;
+static const uint8_t MAX_AXIS_VAL = 234;
+static const uint8_t AVG_AXIS_VAL = 127;
 
 // if any axis (analog stick, c-stick, and L and R axes) changes by a difference
 // below, do not record it
-const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
+static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
+
+// maximum number of consecutive input changes at a time (17 total possible)
+static const uint8_t MAX_CONS_INPUTS = 8;
+
+// maximum number of input diffs to be stored
+static const uint8_t MAX_STORE_SIZE = 10;
+
+// uncommenting enables heavy serial logging
+//#define DEBUG
 
 #endif // GCTRAIN_CONSTANTS_HPP_

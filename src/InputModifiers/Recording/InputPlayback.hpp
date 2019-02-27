@@ -4,6 +4,7 @@
 #include "../InputModifier.hpp"
 #include "InputDiff.hpp"
 #include "InputRecording.hpp"
+#include "constants.hpp"
 #include <Nintendo.h>
 
 class InputPlayback : public InputModifier {
@@ -11,6 +12,7 @@ class InputPlayback : public InputModifier {
     Gamecube_Data_t initialData;
     bool playingBack;
     uint16_t timeElapsed;
+    unsigned long startTime;
     uint8_t currInputDiff;
     InputDiffStore &inputDiffStore;
 
@@ -18,6 +20,7 @@ class InputPlayback : public InputModifier {
     explicit InputPlayback(InputDiffStore &inputDiffStore);
     void initialize(Gamecube_Data_t &initialData);
     void modifyInput(Gamecube_Data_t &dataToModify);
+    bool nextDiffExists();
     bool canApplyNextDiff();
     void applyNextDiff(Gamecube_Data_t &dataToModify);
     void cleanUp();

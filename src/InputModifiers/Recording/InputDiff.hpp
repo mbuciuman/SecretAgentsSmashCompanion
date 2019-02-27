@@ -5,9 +5,6 @@
 #include <Arduino.h>
 #include <Nintendo.h>
 
-// maximum number of consecutive input changes at a time (17 total possible)
-static const uint8_t MAX_CONS_INPUTS = 8;
-
 struct SingleInputDiff {
     ControllerInput input;
     int16_t valueDiff;
@@ -30,6 +27,8 @@ class InputDiff {
     void applyTo(Gamecube_Data_t &dataToModify);
     void applySingleDiffTo(SingleInputDiff &singleInputDiff,
                            Gamecube_Data_t &dataToModify);
+    bool inputsDiffer(uint8_t first, uint8_t second, ControllerInput input);
+    void resetDiffs();
 };
 
 #endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFF_HPP_

@@ -2,6 +2,7 @@
 #define GCTRAIN_INPUTMODIFIERS_NOMODIFIER_HPP_
 
 #include "InputModifier.hpp"
+#include "constants.hpp"
 
 class NoModifier : public InputModifier {
   public:

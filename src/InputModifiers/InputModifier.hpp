@@ -1,6 +1,7 @@
 #ifndef GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
 #define GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
 
+#include "constants.hpp"
 #include <Nintendo.h>
 
 class InputModifier {

@@ -1,7 +1,6 @@
 #ifndef GCTRAIN_INPUTMODIFIERS_ESCAPEOPTION_MASHAIRDODGE_HPP_
 #define GCTRAIN_INPUTMODIFIERS_ESCAPEOPTION_MASHAIRDODGE_HPP_
 
-#include "../../constants.hpp"
 #include "../InputModifier.hpp"
 #include <Nintendo.h>
 

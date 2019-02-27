@@ -3,6 +3,7 @@
 
 #include "../InputModifier.hpp"
 #include "InputDiffStore.hpp"
+#include "constants.hpp"
 #include <Nintendo.h>
 
 class InputRecording : public InputModifier {
@@ -10,7 +11,8 @@ class InputRecording : public InputModifier {
     Gamecube_Data_t initialData;
     Gamecube_Data_t previousData;
     Gamecube_Data_t currentData;
-    uint16_t previousTime;
+    uint16_t timeElapsed;
+    unsigned long previousTime;
     bool recording;
     InputDiffStore inputDiffStore;
 

@@ -12,12 +12,15 @@ void InputRecording::startRecording(Gamecube_Data_t initialData) {
     inputDiffStore.reset();
     this->initialData = initialData;
     this->previousData = initialData;
+    timeElapsed = 0;
     previousTime = 0;
     recording = true;
 }
 
 void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
+#ifdef DEBUG
     Serial.println(F("ir_mi"));
+#endif
     if (!recording) {
         startRecording(currentData);
     } else {
@@ -32,6 +35,7 @@ void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
 #endif
             createNewDiff();
         }
+        timeElapsed = millis() - previousTime;
     }
 }
 
@@ -68,13 +72,15 @@ bool InputRecording::currentDataEqualsPrevious() {
 
 void InputRecording::createNewDiff() {
     if (!inputDiffStore.canStoreDiff()) {
+#ifdef DEBUG
         Serial.println(F("Reached max storage value! Stopping recording!"));
+#endif
         return;
     }
-    uint16_t timeDiff = (uint16_t)millis() - previousTime;
+    uint16_t timeDiff = timeElapsed;
     inputDiffStore.storeDiff(timeDiff, previousData.report, currentData.report);
     previousData = currentData;
-    previousTime += timeDiff;
+    previousTime = millis();
 }
 
 #ifdef DEBUG
@@ -133,4 +139,7 @@ void InputRecording::printReport(Gamecube_Report_t &report) {
 
 InputDiffStore &InputRecording::getInputDiffStore() { return inputDiffStore; }
 
-void InputRecording::cleanUp() { recording = false; }
+void InputRecording::cleanUp() {
+    recording = false;
+    inputDiffStore.storeLastTime(timeElapsed);
+}

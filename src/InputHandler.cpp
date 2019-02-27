@@ -21,21 +21,29 @@ void InputHandler::processInput(Gamecube_Data_t &data) {
 void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     // update active input modifier based on DPad changes
     if (directionReleased(report.dleft, leftPressed)) {
+#ifdef DEBUG
         Serial.println(F("le_re"));
+#endif
         updateActiveInputModifier(Direction::LEFT, leftModifiers,
                                   LEFT_MOD_SIZE);
     }
     if (directionReleased(report.dup, upPressed)) {
+#ifdef DEBUG
         Serial.println(F("up_re"));
+#endif
         updateActiveInputModifier(Direction::UP, upModifiers, UP_MOD_SIZE);
     }
     if (directionReleased(report.dright, rightPressed)) {
+#ifdef DEBUG
         Serial.println(F("ri_re"));
+#endif
         updateActiveInputModifier(Direction::RIGHT, rightModifiers,
                                   RIGHT_MOD_SIZE);
     }
     if (directionReleased(report.ddown, downPressed)) {
+#ifdef DEBUG
         Serial.println(F("do_re"));
+#endif
         updateActiveInputModifier(Direction::DOWN, downModifiers,
                                   DOWN_MOD_SIZE);
     }
@@ -74,30 +82,16 @@ void InputHandler::updateActiveInputModifier(Direction newDirection,
 InputModifier *InputHandler::getNextModifier(Direction newDirection,
                                              InputModifier *modifiers[],
                                              const uint8_t &maxArraySize) {
-    if (currentDirection == newDirection) {
-#ifdef DEBUG
-        Serial.println(F("Current direction equals new direction"));
-#endif
-        if (currentIndex + 1 < maxArraySize) {
-#ifdef DEBUG
-            Serial.println(F("Advancing"));
-#endif
-            currentIndex++;
-            return modifiers[currentIndex];
-        } else {
-#ifdef DEBUG
-            Serial.println(F("Reached end of direction, RESETTING"));
-#endif
-            currentDirection = Direction::NO_DIR;
-            currentIndex = 0;
-            return &noModifier;
-        }
-    } else {
-#ifdef DEBUG
-        Serial.println(F("New direction is diferent from current direction!"));
-#endif
+    if (currentDirection == newDirection && currentIndex + 1 < maxArraySize) {
+        currentIndex++;
+        return modifiers[currentIndex];
+    } else if (currentDirection == Direction::NO_DIR) {
         currentDirection = newDirection;
         currentIndex = 0;
         return modifiers[currentIndex];
+    } else {
+        currentDirection = Direction::NO_DIR;
+        currentIndex = 0;
+        return &noModifier;
     }
 }

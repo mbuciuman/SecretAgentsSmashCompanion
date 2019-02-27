@@ -1,7 +1,6 @@
 #ifndef GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
 #define GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
 
-#include "../../constants.hpp"
 #include "../InputModifier.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>

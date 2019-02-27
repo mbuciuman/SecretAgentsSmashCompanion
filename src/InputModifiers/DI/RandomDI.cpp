@@ -4,7 +4,9 @@
 #include <time.h>
 
 void RandomDI::modifyInput(Gamecube_Data_t &dataToModify) {
+#ifdef DEBUG
     Serial.println(F("rdi_mi"));
+#endif
     int range = MAX_AXIS_VAL - MIN_AXIS_VAL;
     // determine random axis to set to max value
     bool useMaxForXAxis = rand() % 2 == 0;

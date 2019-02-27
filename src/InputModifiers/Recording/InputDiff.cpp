@@ -5,6 +5,7 @@ InputDiff::InputDiff() : timeDiff(0), singleDiffs{} {}
 void InputDiff::initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
                            Gamecube_Report_t &secondReport) {
     this->timeDiff = timeDiff;
+    resetDiffs();
     storeDiffs(firstReport, secondReport);
 }
 
@@ -31,9 +32,34 @@ void InputDiff::storeDiffs(Gamecube_Report_t &firstReport,
         ControllerInput::YAXIS,    ControllerInput::C_XAXIS,
         ControllerInput::C_YAXIS};
     for (int i = 0; i < MAX_CONS_INPUTS; i++) {
-        // limit the number of stored diffs based on the flag
-        storeSingleDiff(firstReportInputs[i], secondReportInputs[i],
-                        associatedInputs[i]);
+        if (inputsDiffer(firstReportInputs[i], secondReportInputs[i],
+                         associatedInputs[i])) {
+            storeSingleDiff(firstReportInputs[i], secondReportInputs[i],
+                            associatedInputs[i]);
+        }
+    }
+}
+
+bool InputDiff::inputsDiffer(uint8_t first, uint8_t second,
+                             ControllerInput input) {
+    if (input == ControllerInput::L_ANALOG ||
+        input == ControllerInput::R_ANALOG || input == ControllerInput::XAXIS ||
+        input == ControllerInput::YAXIS || input == ControllerInput::C_XAXIS ||
+        input == ControllerInput::C_YAXIS) {
+        // axis inputs should only be counted if they are greater than the
+        // allowable drift
+        return abs(second - first) > ALLOWABLE_AXIS_DRIFT;
+    }
+    return second - first > 0;
+}
+
+/**
+ * Store dummy diffs in each element
+ */
+void InputDiff::resetDiffs() {
+    for (int i = 0; i < MAX_CONS_INPUTS; i++) {
+        singleDiffs[i].input = ControllerInput::A;
+        singleDiffs[i].valueDiff = 0;
     }
 }
 
@@ -94,6 +120,9 @@ void InputDiff::applySingleDiffTo(SingleInputDiff &singleInputDiff,
         dataToModify.report.cyAxis += singleInputDiff.valueDiff;
         break;
     default:
+#ifdef DEBUG
         Serial.print(F("Invalid controller input!"));
+#endif
+        break;
     }
 }

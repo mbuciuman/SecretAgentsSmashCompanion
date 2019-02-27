@@ -6,7 +6,9 @@
 MashAirdodge::MashAirdodge() : executingAirdodge(false) {}
 
 void MashAirdodge::modifyInput(Gamecube_Data_t &dataToModify) {
+#ifdef DEBUG
     Serial.println(F("ma_mi"));
+#endif
     if (executingAirdodge) {
         // toggle airdodge off if executing airdodge
         dataToModify.report.l = 0;
