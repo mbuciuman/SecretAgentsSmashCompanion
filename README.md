@@ -1,4 +1,4 @@
-# GC_Train
+# Secret Smash Training Companion
 Arduino training program for in-line GC controller adapter
 
 ## Utilized Licensed Software
