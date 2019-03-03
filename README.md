@@ -1,7 +1,5 @@
 # Secret Agent's Smash Companion
-This project implements an in-line Gamecube Controller adapter which can modify GC controller inputs, primarily for practicing against a virtual opponent in Smash Bros. Ultimate (or Melee). It simulates inputs which the Training Mode's CPU cannot, such as inputting frame-perfect DI, various escape options, or recording and playing-back user inputs.
-
-The adapter primarily uses an Arduino Nano in conjuction with a logic-level converter to step-down the Arduino Nano's digital logic to the Gamecube's 3.3 V data line.
+This project implements an in-line Gamecube Controller adapter which can modify GC controller inputs, primarily for practicing against a virtual opponent in Smash Bros. Ultimate (or Melee). The adapter primarily uses an Arduino Nano in conjuction with a logic-level converter to step-down the Arduino Nano's digital logic to the Gamecube's 3.3 V data line.
 
 ## Getting Started
 Below are instructions on how to build and upload the code to an Arduino Nano, and how to use the included EAGLE files to get a PCB.
@@ -26,7 +24,7 @@ __NOTE:__ You may have to change the `upload_port` variable in `platformio.ini` 
 
 Assuming it builds successfully, your code should be on the Arduino and immediately start running.
 
-### How to Put Together
+### How to Assemble
 I included my own designs of a PCB which should make it simple to put together all the necessary parts.
 
 #### Manufacture PCB
@@ -40,11 +38,11 @@ Here are the things you should need:
 OR
 * Arduino Nano Clone: https://www.amazon.com/ELEGOO-Arduino-ATmega328P-Without-Compatible/dp/B0713XK923/ref=sr_1_4?keywords=arduino+nano&qid=1551589218&s=gateway&sr=8-4
 
-__NOTE__ If you get the Arduino Nano Clone, you may need to change the `board` var in `platformio.ini` depending on its bootloader.
+__NOTE:__ If you get the Arduino Nano Clone, you may need to change the `board` var in `platformio.ini` depending on its bootloader.
 
 * Bi-directional Logic Level Converter: https://www.sparkfun.com/products/12009
 * Gamecube Controller Extension Cable: https://www.amazon.com/gp/product/B001AI7CF2/ref=oh_aui_search_asin_title?ie=UTF8&psc=1
-* Header pins (__NOTE__ should only be needed if the Arduino or the BLLC do not come with header pins already): https://www.sparkfun.com/products/116
+* Header pins (__NOTE:__ should only be needed if the Arduino or the BLLC do not come with header pins already): https://www.sparkfun.com/products/116
 * Project box (optional)
 
 #### Assemble Components
@@ -77,11 +75,50 @@ I *HIGHLY* recommend using hot glue on the GC_CONS and GC_CONT inputs as the wir
 Also, putting the board into a project box will give it further protection.
 
 #### Connecting to Console
-The adapter should work immediately after plugging it into the console, and you should be able to see the controller being detected by the Gamecube/Switch as if it was just another controller.
+The adapter should work immediately after plugging it into the console, and you should be able to see the controller being detected by the Gamecube/Switch as if it was just another controller. The Arduino Nano's light should be on showing that it's powered.
+
+If you notice that inputs are not going through and the Arduino light is on, press and hold L+R+A+START to reset the controller, and if that doesn't work, try holding X+Y+START as well.
 
 ## Usage
 
-TBD
+Once you've connected the adapter to the console and the controller is sending all inputs to the console successfully, you'll be able to use the training modes listed below.
+
+### General
+Each training mode is mapped in some way to the D-Pad inputs. With the adapter plugged in, no D-Pad inputs will be sent to the console, but will instead be how you select between different training modes.
+
+Each D-Pad direction has a number of different training modes associated with it. So, in order to select a specific mode, you have to press the associated D-Pad direction a certain number of times to cycle to the desired mode.
+
+There are two ways to exit the current mode and return to sending all user-inputs through to the console.
+The first is to continue to press the D-Pad direction in the same direction as the current mode until you reach the last mode, then press the D-Pad in the direction one last time (e.g. When in the Mash Jump mode, tap D-Pad Left twice).
+The second is to press the D-Pad direction in a different direction than the current mode (e.g. tap D-Pad Down when in the Random DI training mode).
+
+The modes bound to each D-Pad input are listed below:
+
+### DI Training (D-Pad Left)
+
+There are two training modes on D-Pad Left:
+
+* Left/Right DI: inputs left and right DI with a neutral analog stick input alternating between them
+* Random DI: inputs DI in a random direction with a neutral analog stick input alternating between each random DI input
+
+### Escape Option Training (D-Pad Right)
+
+There are two training modes on D-Pad Right:
+
+* Mash Jump: inputs jumps continuously
+* Mash Air-dodge: inputs air-dodge inputs in random directions
+
+### Input Recording and Input Playback (D-Pad Down and D-Pad Up)
+
+To be written...
+
+## Specific Configuration Options
+
+To be written...
+
+## How to Add Your Own Training Mod
+
+To be written...
 
 ## Utilized Licensed Software
 
