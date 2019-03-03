@@ -133,7 +133,7 @@ https://github.com/cyberlink1/Arduino-Eagle-Cad-Library
 ## Miscellaneous
 
 ### Gamecube Controller USB Adapter Compatibility
-I have successfully tested this code against an Arduino Nano plugged into a Nintendo Gamecube and the official Nintendo 4-port Gamecube Adapter. While I also tried to test this against a Mayflash 4-port [W012] adapter, I had no luck. YMMV however as some people have reported it working with the Mayflash adapters.
+I have successfully tested this code against an Arduino Nano plugged into a Nintendo Gamecube and the official Nintendo 4-port Gamecube Adapter. While I also tried to test the board against a Mayflash 4-port [W012] adapter, I had no luck. YMMV however as some people have reported some Arduinos using Nicohood's Nintendo library working with the Mayflash adapters.
 
 ### Author's Note
 Just a heads up, this is my first official open-source, C++, and serious embedded development project, so feel free to send me suggestions and improvements. I primarily have studied and developed in Java, C#, and Python, so C++ has been interesting to work with to say the least.
