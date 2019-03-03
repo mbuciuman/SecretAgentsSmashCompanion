@@ -1,13 +1,17 @@
-#ifndef GCTRAIN_INPUTMODIFIERS_NOMODIFIER_HPP_
-#define GCTRAIN_INPUTMODIFIERS_NOMODIFIER_HPP_
+#ifndef SASC_INPUTMODIFIERS_NOMODIFIER_HPP_
+#define SASC_INPUTMODIFIERS_NOMODIFIER_HPP_
 
+#include "Constants.hpp"
 #include "InputModifier.hpp"
-#include "constants.hpp"
 
+/**
+ * @brief Input modifier which just performs a no-op
+ *
+ */
 class NoModifier : public InputModifier {
   public:
     explicit NoModifier();
     void modifyInput(Gamecube_Data_t &dataToModify);
     void cleanUp();
 };
-#endif // GCTRAIN_INPUTMODIFIERS_NOMODIFIER_HPP_
+#endif // SASC_INPUTMODIFIERS_NOMODIFIER_HPP_

@@ -1,10 +1,15 @@
-#ifndef GCTRAIN_INPUTMODIFIERS_DI_RANDOMDI_HPP_
-#define GCTRAIN_INPUTMODIFIERS_DI_RANDOMDI_HPP_
+#ifndef SASC_INPUTMODIFIERS_DI_RANDOMDI_HPP_
+#define SASC_INPUTMODIFIERS_DI_RANDOMDI_HPP_
 
 #include "../InputModifier.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 
+/**
+ * @brief Input modifier which mashes random DI, then returns to neutral, then
+ * repeats
+ *
+ */
 class RandomDI : public InputModifier {
   private:
     enum class State : char { NEUTRAL, DI };
@@ -19,4 +24,4 @@ class RandomDI : public InputModifier {
     void cleanUp();
 };
 
-#endif // GCTRAIN_INPUTMODIFIERS_DI_RANDOMDI_HPP_
+#endif // SASC_INPUTMODIFIERS_DI_RANDOMDI_HPP_

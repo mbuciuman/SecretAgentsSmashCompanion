@@ -1,9 +1,13 @@
-#ifndef GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
-#define GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
+#ifndef SASC_INPUTMODIFIERS_INPUTMODIFIER_HPP_
+#define SASC_INPUTMODIFIERS_INPUTMODIFIER_HPP_
 
-#include "constants.hpp"
+#include "Constants.hpp"
 #include <Nintendo.h>
 
+/**
+ * @brief Parent abstract class for any input modifier. Requires children to
+ * have modification and clean-up logic implementations
+ */
 class InputModifier {
   protected:
     uint8_t currentWaitFrames = 0;
@@ -13,4 +17,4 @@ class InputModifier {
     virtual void modifyInput(Gamecube_Data_t &dataToModify) = 0;
     virtual void cleanUp() = 0;
 };
-#endif // GCTRAIN_INPUTMODIFIERS_INPUTMODIFIER_HPP_
+#endif // SASC_INPUTMODIFIERS_INPUTMODIFIER_HPP_

@@ -1,10 +1,18 @@
-#ifndef GCTRAIN_PRINTREPORT_HPP_
-#define GCTRAIN_PRINTREPORT_HPP_
+#ifndef SASC_PRINTREPORT_HPP_
+#define SASC_PRINTREPORT_HPP_
 
+/**
+ * @brief Class with utility method for printing Gamecube Report vars.
+ *
+ */
 class PrintReport {
   public:
+    /**
+     * @brief Prints the controller report to Serial
+     *
+     * @param report given controller report
+     */
     static void printReport(Gamecube_Report_t &report) {
-        // Prints the raw data from the controller
         Serial.println();
         Serial.println(F("Printing Gamecube controller report:"));
         Serial.print(F("Start:\t"));
@@ -56,4 +64,4 @@ class PrintReport {
     }
 };
 
-#endif // GCTRAIN_PRINTREPORT_HPP_
+#endif // SASC_PRINTREPORT_HPP_

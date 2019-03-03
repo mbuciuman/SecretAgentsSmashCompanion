@@ -1,5 +1,10 @@
 #include "InputHandler.hpp"
 
+/**
+ * @brief Construct a new Input Handler:: Input Handler object. This is also
+ * where each DPad's direction is given its list of input modifiers.
+ *
+ */
 InputHandler::InputHandler()
     : leftPressed(false), upPressed(false), rightPressed(false),
       downPressed(false), currentIndex(0), currentDirection(Direction::NO_DIR),
@@ -8,7 +13,9 @@ InputHandler::InputHandler()
       activeInputModifier(&noModifier) {}
 
 /**
- * Given a controller's data, modifies it based on the active input modifier
+ * @brief Given a controller's data, modifies it based on the active input
+ * modifier
+ * @param data the reference to the current controller's data
  */
 void InputHandler::processInput(Gamecube_Data_t &data) {
     updateCurrentState(data.report);
@@ -17,7 +24,7 @@ void InputHandler::processInput(Gamecube_Data_t &data) {
 }
 
 /**
- * Update the handler's state given the Gamecube controller report
+ * @brief Update the handler's state given the Gamecube controller report
  */
 void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     // update active input modifier based on DPad changes
@@ -51,7 +58,7 @@ void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
 }
 
 /**
- * Checks to see if the given DPad input was released
+ * @brief Checks to see if the given DPad input was released
  */
 bool InputHandler::directionReleased(uint8_t input, bool &dirPressed) {
     if (input == 1) {
@@ -66,8 +73,8 @@ bool InputHandler::directionReleased(uint8_t input, bool &dirPressed) {
 }
 
 /**
- * Update the active input modifier given the list of input modifiers and its
- * iterator
+ * @brief Update the active input modifier given the list of input modifiers and
+ * its iterator
  */
 void InputHandler::updateActiveInputModifier(Direction newDirection,
                                              InputModifier *modifiers[],
@@ -78,7 +85,8 @@ void InputHandler::updateActiveInputModifier(Direction newDirection,
 }
 
 /**
- * Get the next input modifier from the given list and its current iterator
+ * @brief Get the next input modifier from the given list and its current
+ * iterator
  */
 InputModifier *InputHandler::getNextModifier(Direction newDirection,
                                              InputModifier *modifiers[],
@@ -97,6 +105,11 @@ InputModifier *InputHandler::getNextModifier(Direction newDirection,
     }
 }
 
+/**
+ * @brief Zeroes the DPad inputs from the given controller data
+ *
+ * @param dataToModify given controller data
+ */
 void InputHandler::removeDPadInputs(Gamecube_Data_t &dataToModify) {
     dataToModify.report.dleft = 0;
     dataToModify.report.dup = 0;

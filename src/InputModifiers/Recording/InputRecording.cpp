@@ -1,9 +1,20 @@
 #include "InputRecording.hpp"
 
+/**
+ * @brief Construct a new Input Recording:: Input Recording object. Initializes
+ * an empty input diff store.
+ *
+ */
 InputRecording::InputRecording()
     : previousData(Gamecube_Data_t()), timeElapsed(0), previousTime(0),
       recording(false), inputDiffStore() {}
 
+/**
+ * @brief Starts the recording of inputs by initializing (or re-initializing)
+ * all class vars. Also clears the input diff store.
+ *
+ * @param currentData The current controller input data
+ */
 void InputRecording::startRecording(Gamecube_Data_t &currentData) {
 #ifdef DEBUG
     Serial.print(F("Starting recording"));
@@ -17,6 +28,18 @@ void InputRecording::startRecording(Gamecube_Data_t &currentData) {
     recording = true;
 }
 
+/**
+ * @brief Modifier method for input recording.
+ *
+ * First checks to see if the 'recording' flag is false and initializes all
+ * class vars.
+ *
+ * The main logic checks to see if the previously stored input data differs from
+ * the current controller input data, then stores the difference between the
+ * input data into the input diff store.
+ *
+ * @param currentData
+ */
 void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
 #ifdef DEBUG
     Serial.println(F("ir_mi"));
@@ -38,6 +61,12 @@ void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
     }
 }
 
+/**
+ * @brief Checks to see if the current data differs from the previously stored
+ * controller data.
+ *
+ * @param currentData current controller data
+ */
 bool InputRecording::currentDataEqualsPrevious(Gamecube_Data_t &currentData) {
     Gamecube_Report_t previousReport = previousData.report;
     Gamecube_Report_t currentReport = currentData.report;
@@ -69,6 +98,11 @@ bool InputRecording::currentDataEqualsPrevious(Gamecube_Data_t &currentData) {
            cyAxisDiff < ALLOWABLE_AXIS_DRIFT;
 }
 
+/**
+ * @brief Creates and stores a new input diff in the input diff store.
+ *
+ * @param currentData current controller data
+ */
 void InputRecording::createNewDiff(Gamecube_Data_t &currentData) {
     if (!inputDiffStore.canStoreDiff()) {
 #ifdef DEBUG
@@ -83,8 +117,15 @@ void InputRecording::createNewDiff(Gamecube_Data_t &currentData) {
     previousTime = millis();
 }
 
+/**
+ * @brief Returns a reference to this class's input diff store.
+ */
 InputDiffStore &InputRecording::getInputDiffStore() { return inputDiffStore; }
 
+/**
+ * @brief Clean up method which stops recording and stores the time between the
+ * last input change and when this class was cleaned up.
+ */
 void InputRecording::cleanUp() {
     recording = false;
     inputDiffStore.storeLastTime(millis() - previousTime);

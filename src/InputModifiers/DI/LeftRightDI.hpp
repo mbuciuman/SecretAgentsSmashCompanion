@@ -1,5 +1,5 @@
-#ifndef GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
-#define GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
+#ifndef SASC_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
+#define SASC_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
 
 #include "../InputModifier.hpp"
 #include <Arduino.h>
@@ -17,4 +17,4 @@ class LeftRightDI : public InputModifier {
     void cleanUp();
 };
 
-#endif // GCTRAIN_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_
+#endif // SASC_INPUTMODIFIERS_DI_LEFTRIGHTDI_HPP_

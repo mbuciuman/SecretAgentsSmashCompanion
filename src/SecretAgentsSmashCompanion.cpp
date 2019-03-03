@@ -1,5 +1,13 @@
+/**
+ * @file SecretAgentsSmashCompanion.cpp
+ * @author Michael Buciuman-Coman (mbuciuma@gmail.com)
+ * @brief Main logic for microcontroller. Recommend checking InputHandler.cpp
+ * for majority of logic. All vars stored as statically-allocated data.
+ * @version 1.0
+ *
+ */
+#include "Constants.hpp"
 #include "InputHandler.hpp"
-#include "constants.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
 #include <stdlib.h>
@@ -30,10 +38,14 @@ void setup() {
 void loop() {
     // Try to read the controller data
     if (gcController.read()) {
+
         // Print Controller information
         auto data = gcController.getData();
+
+        // Process input using Input Handler
         inputHandler.processInput(data);
 #ifdef WRITE
+        // Write modified input to console
         if (!gcConsole.write(data)) {
 #ifdef DEBUG
             Serial.println(F("ERRWRITE"));
@@ -45,11 +57,7 @@ void loop() {
         // Add debounce if reading failed
 #ifdef DEBUG
         Serial.println(F("ERREAD"));
-        digitalWrite(LED_PIN, HIGH);
 #endif
         delay(100);
     }
-#ifdef DEBUG
-    digitalWrite(LED_PIN, LOW);
-#endif
 }

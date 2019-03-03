@@ -1,11 +1,13 @@
-#ifndef GCTRAIN_CONSTANTS_HPP_
-#define GCTRAIN_CONSTANTS_HPP_
+#ifndef SASC_CONSTANTS_HPP_
+#define SASC_CONSTANTS_HPP_
 
 #include <Arduino.h>
 #include <Nintendo.h>
 #include <stdint.h>
 
+// enum representing generic directions
 enum class Direction : uint8_t { LEFT, UP, RIGHT, DOWN, NO_DIR };
+// enum representing (useful) controller inputs
 enum class ControllerInput : uint8_t {
     A = 0,
     B,
@@ -45,9 +47,10 @@ static const uint8_t MAX_SINGLE_INPUT_DIFFS = 13;
 
 // maximum number of input diffs to be stored
 // WARNING: when setting this, check the build's Data size to be smaller than
-// the Microcontroller's A single button diff is 6 bytes, so each incrementing
-// of the input diffs stored below is 6 bytes * MAX_SINGLE_INPUT_DIFFS
-static const uint8_t MAX_STORE_SIZE = 17;
+// the Microcontroller's A single button diff [SingleInputDiff] is 6 bytes, so
+// each incrementing of the input diffs stored below is 6 bytes *
+// MAX_SINGLE_INPUT_DIFFS
+static const uint8_t MAX_STORE_SIZE = 20;
 
 // frames to wait between inputs
 static const uint8_t WAIT_FRAMES = 45;
@@ -60,4 +63,4 @@ static const uint8_t WAIT_FRAMES = 45;
 // uncommenting enables Gamecube writing
 #define WRITE
 
-#endif // GCTRAIN_CONSTANTS_HPP_
+#endif // SASC_CONSTANTS_HPP_

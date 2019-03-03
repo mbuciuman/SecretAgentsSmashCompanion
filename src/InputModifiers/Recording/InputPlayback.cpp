@@ -1,10 +1,21 @@
 #include "InputPlayback.hpp"
 
+/**
+ * @brief Construct a new Input Playback:: Input Playback object. Requires a
+ * reference to an InputDiffStore.
+ *
+ * @param inputDiffStore
+ */
 InputPlayback::InputPlayback(InputDiffStore &inputDiffStore)
     : currentData(Gamecube_Data_t()), playingBack(false), timeElapsed(0),
       startTime(0), currInputDiffIndex(0), inputDiffStore(inputDiffStore) {}
 
-void InputPlayback::initialize() {
+/**
+ * @brief Starts playback by initializing (or re-initializing) all variables.
+ * Also called when restarting playback.
+ *
+ */
+void InputPlayback::startPlayback() {
     currentData = inputDiffStore.getInitialData();
     timeElapsed = 0;
     startTime = millis();
@@ -12,6 +23,22 @@ void InputPlayback::initialize() {
     playingBack = true;
 }
 
+/**
+ * @brief Modifier method for input playback.
+ * This is the main logic flow for handling playback.
+ *
+ * First checks to see if the playback flag is false and initializes all vars
+ * for starting playback. Otherwise, we enter the logic for playing back.
+ *
+ * The main concept for this method is that this class has a 'currentData'
+ * representing the input as it was recorded. The given 'dataToModify' is
+ * continuously overridden with the 'currentData' values during playback.
+ *
+ * Once all diffs have been applied to 'currentData', then we just have to wait
+ * for the time between the last input diff and when the recording stopped.
+ *
+ * @param dataToModify
+ */
 void InputPlayback::modifyInput(Gamecube_Data_t &dataToModify) {
 #ifdef DEBUG
     Serial.println(F("ip_mi"));
@@ -21,7 +48,7 @@ void InputPlayback::modifyInput(Gamecube_Data_t &dataToModify) {
 #ifdef DEBUG
         Serial.println(F("Initializing"));
 #endif
-        initialize();
+        startPlayback();
     } else if (nextDiffExists()) {
 #ifdef DEBUG
         Serial.println(F("Next diff exists!"));
@@ -50,21 +77,34 @@ void InputPlayback::modifyInput(Gamecube_Data_t &dataToModify) {
     }
 }
 
+/**
+ * @brief Checks to see if there is another diff remaining.
+ */
 bool InputPlayback::nextDiffExists() {
     return currInputDiffIndex < inputDiffStore.getTotalDiffs();
 }
 
+/**
+ * @brief Checks to see if enough time has elapsed before the next diff
+ * should be applied.
+ */
 bool InputPlayback::canApplyNextDiff() {
     return timeElapsed >
            inputDiffStore.getDiff(currInputDiffIndex).getTimeDiff();
 }
 
+/**
+ * @brief Applies the next diff to the 'currentData' var representing
+ * the recorded input
+ */
 void InputPlayback::applyNextDiff() {
-    // apply next diff to current data
     inputDiffStore.getDiff(currInputDiffIndex).applyTo(currentData);
     currInputDiffIndex++;
 }
 
+/**
+ * @brief Modifies the passed data with each input in the recorded data
+ */
 void InputPlayback::modifyWithCurrentData(Gamecube_Data_t &dataToModify) {
 #ifdef DEBUG
     Serial.println(F("PRINTING CURRENT REPORT"));
@@ -90,4 +130,7 @@ void InputPlayback::modifyWithCurrentData(Gamecube_Data_t &dataToModify) {
 #endif
 }
 
+/**
+ * @brief Stops playback as clean up
+ */
 void InputPlayback::cleanUp() { playingBack = false; }

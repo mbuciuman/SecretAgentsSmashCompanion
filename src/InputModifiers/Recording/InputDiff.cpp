@@ -1,7 +1,17 @@
 #include "InputDiff.hpp"
 
+/**
+ * @brief Construct a new Input Diff:: Input Diff object
+ */
 InputDiff::InputDiff() : timeDiff(0), singleDiffs{} {}
 
+/**
+ * @brief Initializes (or re-initializes) this input diff
+ *
+ * @param timeDiff time elapsed between controller inputs in ms.
+ * @param firstReport the first controller input report
+ * @param secondReport the second controller input report
+ */
 void InputDiff::initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
                            Gamecube_Report_t &secondReport) {
     reset();
@@ -9,8 +19,12 @@ void InputDiff::initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
     storeDiffs(firstReport, secondReport);
 }
 
+/**
+ * @brief Stores the diffs between both controller reports
+ */
 void InputDiff::storeDiffs(Gamecube_Report_t &firstReport,
                            Gamecube_Report_t &secondReport) {
+    // NOTE: Arrays below SHOULD LINE UP between all inputs
     uint8_t firstReportInputs[] = {
         firstReport.a,     firstReport.b,     firstReport.x,
         firstReport.y,     firstReport.z,     firstReport.l,
@@ -40,11 +54,25 @@ void InputDiff::storeDiffs(Gamecube_Report_t &firstReport,
     }
 }
 
+/**
+ * @brief Determines whether the two inputs given the associated buttons differ.
+ * NOTE: this method was created in case specific logic needed to be added for
+ * certain input diffs.
+ *
+ * @param first first input value
+ * @param second second input value
+ * @param input the associated input type
+ * @return true the inputs differ significantly
+ * @return false the inputs do not differ significantly
+ */
 bool InputDiff::inputsDiffer(uint8_t first, uint8_t second,
                              ControllerInput input) {
     return abs(second - first) > 0;
 }
 
+/**
+ * @brief Resets this object to initial values.
+ */
 void InputDiff::reset() {
     // reset diff by storing dummy diffs in each element
     for (int i = 0; i < MAX_SINGLE_INPUT_DIFFS; i++) {
@@ -53,20 +81,42 @@ void InputDiff::reset() {
     }
 }
 
+/**
+ * @brief Helper method to store a single input's diff.
+ *
+ * @param firstVal the first input value
+ * @param secondVal the second input value
+ * @param input the associated input type
+ */
 void InputDiff::storeSingleDiff(uint8_t firstVal, uint8_t secondVal,
                                 ControllerInput input) {
     int16_t diff = (int16_t)secondVal - (int16_t)firstVal;
     this->singleDiffs[(int)input] = (SingleInputDiff){input, diff};
 }
 
+/**
+ * @brief Returns the time elapsed between diffs in ms.
+ */
 uint16_t InputDiff::getTimeDiff() { return timeDiff; }
 
+/**
+ * @brief Applies this stored diff to a given reference of a controller's data.
+ *
+ * @param dataToModify a given controller's data
+ */
 void InputDiff::applyTo(Gamecube_Data_t &dataToModify) {
     for (int i = 0; i < MAX_SINGLE_INPUT_DIFFS; i++) {
         applySingleDiffTo(singleDiffs[i], dataToModify);
     }
 }
 
+/**
+ * @brief Helper method which applies a single input's diff to a given reference
+ * of a controller's data.
+ *
+ * @param singleInputDiff the single input diff to apply
+ * @param dataToModify a given controller's data
+ */
 void InputDiff::applySingleDiffTo(SingleInputDiff &singleInputDiff,
                                   Gamecube_Data_t &dataToModify) {
     switch (singleInputDiff.input) {

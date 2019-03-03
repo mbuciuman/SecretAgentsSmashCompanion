@@ -4,6 +4,9 @@
 #include "../InputModifier.hpp"
 #include <Nintendo.h>
 
+/**
+ * @brief Input modifier which mashes the jump button
+ */
 class MashJump : public InputModifier {
   private:
     enum class State : char { NEUTRAL, JUMP };
