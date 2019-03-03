@@ -77,7 +77,9 @@ Also, putting the board into a project box will give it further protection.
 #### Connecting to Console
 The adapter should work immediately after plugging it into the console, and you should be able to see the controller being detected by the Gamecube/Switch as if it was just another controller. The Arduino Nano's light should be on showing that it's powered.
 
-If you notice that inputs are not going through and the Arduino light is on, press and hold L+R+A+START to reset the controller, and if that doesn't work, try holding X+Y+START as well.
+If you notice that inputs are not going through and the Arduino light is on, press and hold L+R+A+B to reset the controller, and if that doesn't work, try holding X+Y+START as well.
+
+If it still doesn't work, I would recommend uncommenting the `#define DEBUG` directive in `Constants.hpp`, and commenting out the `#define WRITE` directive to triage the controller input reading.
 
 ## Usage
 
@@ -116,7 +118,7 @@ To be written...
 
 To be written...
 
-## How to Add Your Own Training Mod
+## How to Add Your Own Training Mode
 
 To be written...
 
