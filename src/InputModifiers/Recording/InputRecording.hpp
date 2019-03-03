@@ -5,12 +5,13 @@
 #include "InputDiffStore.hpp"
 #include "constants.hpp"
 #include <Nintendo.h>
+#ifdef DEBUG
+#include "PrintReport.hpp"
+#endif
 
 class InputRecording : public InputModifier {
   private:
-    Gamecube_Data_t initialData;
     Gamecube_Data_t previousData;
-    Gamecube_Data_t currentData;
     uint16_t timeElapsed;
     unsigned long previousTime;
     bool recording;
@@ -18,13 +19,10 @@ class InputRecording : public InputModifier {
 
   public:
     explicit InputRecording();
-    void startRecording(Gamecube_Data_t initialData);
+    void startRecording(Gamecube_Data_t &initialData);
     void modifyInput(Gamecube_Data_t &currentData);
-    bool currentDataEqualsPrevious();
-    void createNewDiff();
-#ifdef DEBUG
-    void printReport(Gamecube_Report_t &report);
-#endif
+    bool currentDataEqualsPrevious(Gamecube_Data_t &currentData);
+    void createNewDiff(Gamecube_Data_t &currentData);
     void cleanUp();
     InputDiffStore &getInputDiffStore();
 };

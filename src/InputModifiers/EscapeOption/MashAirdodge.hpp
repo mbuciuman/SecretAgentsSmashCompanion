@@ -6,7 +6,10 @@
 
 class MashAirdodge : public InputModifier {
   private:
-    bool executingAirdodge;
+    enum class State : char { NEUTRAL, AIRDODGE };
+    State nextState;
+    uint8_t storedXAxis;
+    uint8_t storedYAxis;
 
   public:
     explicit MashAirdodge();

@@ -7,12 +7,14 @@
 
 class InputDiffStore {
   private:
+    Gamecube_Data_t initialData;
     InputDiff inputDiffs[MAX_STORE_SIZE];
     uint8_t totalDiffs;
     uint16_t lastTime;
 
   public:
     InputDiffStore();
+    void initialize(Gamecube_Data_t &initialData);
     bool canStoreDiff();
     void storeDiff(uint16_t timeDiff, Gamecube_Report_t &firstReport,
                    Gamecube_Report_t &secondReport);
@@ -20,6 +22,7 @@ class InputDiffStore {
     InputDiff &getDiff(int index);
     uint8_t getTotalDiffs();
     uint16_t getLastTime();
+    Gamecube_Data_t getInitialData();
     void reset();
 };
 #endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFFSTORE_HPP_

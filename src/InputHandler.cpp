@@ -13,6 +13,7 @@ InputHandler::InputHandler()
 void InputHandler::processInput(Gamecube_Data_t &data) {
     updateCurrentState(data.report);
     activeInputModifier->modifyInput(data);
+    removeDPadInputs(data);
 }
 
 /**
@@ -94,4 +95,11 @@ InputModifier *InputHandler::getNextModifier(Direction newDirection,
         currentIndex = 0;
         return &noModifier;
     }
+}
+
+void InputHandler::removeDPadInputs(Gamecube_Data_t &dataToModify) {
+    dataToModify.report.dleft = 0;
+    dataToModify.report.dup = 0;
+    dataToModify.report.dright = 0;
+    dataToModify.report.ddown = 0;
 }

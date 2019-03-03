@@ -2,6 +2,7 @@
 #define GCTRAIN_CONSTANTS_HPP_
 
 #include <Arduino.h>
+#include <Nintendo.h>
 #include <stdint.h>
 
 enum class Direction : uint8_t { LEFT, UP, RIGHT, DOWN, NO_DIR };
@@ -19,10 +20,6 @@ enum class ControllerInput : uint8_t {
     YAXIS,
     C_XAXIS,
     C_YAXIS,
-    DPAD_UP,
-    DPAD_RIGHT,
-    DPAD_LEFT,
-    DPAD_DOWN,
     TOTAL_INPUTS
 };
 
@@ -41,13 +38,23 @@ static const uint8_t AVG_AXIS_VAL = 127;
 // below, do not record it
 static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
 
-// maximum number of consecutive input changes at a time (17 total possible)
-static const uint8_t MAX_CONS_INPUTS = 8;
+// maximum number of single input changes at a time (13 total possible):
+// A, B, X, Y, Z, L, L (analog), R, R (analog), Analog stick X Axis, Analog
+// stick Y Axis, C-Stick X Axis, C-Stick Y Axis
+static const uint8_t MAX_SINGLE_INPUT_DIFFS = 13;
 
 // maximum number of input diffs to be stored
-static const uint8_t MAX_STORE_SIZE = 10;
+// WARNING: when setting this, check the build's Data size to be smaller than
+// the Microcontroller's A single button diff is 6 bytes, so each incrementing
+// of the input diffs stored below is 6 bytes * MAX_SINGLE_INPUT_DIFFS
+static const uint8_t MAX_STORE_SIZE = 17;
+
+// frames to wait between inputs
+static const uint8_t WAIT_FRAMES = 45;
 
 // uncommenting enables heavy serial logging
+// WARNING: should be paired with commenting WRITE below as serial logging slows
+// down output to the point where it fails to write
 //#define DEBUG
 
 // uncommenting enables Gamecube writing

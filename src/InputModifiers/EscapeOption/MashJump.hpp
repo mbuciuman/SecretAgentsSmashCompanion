@@ -6,7 +6,8 @@
 
 class MashJump : public InputModifier {
   private:
-    bool executingJump;
+    enum class State : char { NEUTRAL, JUMP };
+    State nextState;
 
   public:
     explicit MashJump();

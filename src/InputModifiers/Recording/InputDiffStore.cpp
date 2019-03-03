@@ -2,7 +2,12 @@
 
 InputDiffStore::InputDiffStore() : inputDiffs{}, totalDiffs(0) {}
 
-bool InputDiffStore::canStoreDiff() { return totalDiffs < MAX_STORE_SIZE - 1; }
+void InputDiffStore::initialize(Gamecube_Data_t &initialData) {
+    Gamecube_Data_t *dataPtr = &initialData;
+    memcpy(&this->initialData, dataPtr, sizeof(this->initialData));
+}
+
+bool InputDiffStore::canStoreDiff() { return totalDiffs < MAX_STORE_SIZE; }
 
 void InputDiffStore::storeDiff(uint16_t timeDiff,
                                Gamecube_Report_t &firstReport,
@@ -21,6 +26,14 @@ uint8_t InputDiffStore::getTotalDiffs() { return totalDiffs; }
 
 uint16_t InputDiffStore::getLastTime() { return lastTime; }
 
+Gamecube_Data_t InputDiffStore::getInitialData() {
+    Gamecube_Data_t copy;
+    Gamecube_Data_t *dataPtr = &initialData;
+    memcpy(&copy, dataPtr, sizeof(copy));
+    return copy;
+}
+
 void InputDiffStore::reset() {
-    totalDiffs = 0; // resets the index at which the next diff will be stored
+    // totalDiffs is also used as the index of the latest stored diff
+    totalDiffs = 0;
 }

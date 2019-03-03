@@ -1,17 +1,17 @@
 #include "InputRecording.hpp"
 
 InputRecording::InputRecording()
-    : initialData(Gamecube_Data_t()), previousData(Gamecube_Data_t()),
-      currentData(Gamecube_Data_t()), previousTime(0), recording(false),
-      inputDiffStore() {}
+    : previousData(Gamecube_Data_t()), timeElapsed(0), previousTime(0),
+      recording(false), inputDiffStore() {}
 
-void InputRecording::startRecording(Gamecube_Data_t initialData) {
+void InputRecording::startRecording(Gamecube_Data_t &currentData) {
 #ifdef DEBUG
     Serial.print(F("Starting recording"));
 #endif
     inputDiffStore.reset();
-    this->initialData = initialData;
-    this->previousData = initialData;
+    inputDiffStore.initialize(currentData);
+    Gamecube_Data_t *dataPtr = &currentData;
+    memcpy(&previousData, dataPtr, sizeof(previousData));
     timeElapsed = 0;
     previousTime = millis();
     recording = true;
@@ -24,22 +24,21 @@ void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
     if (!recording) {
         startRecording(currentData);
     } else {
-        this->currentData = currentData;
-        if (!currentDataEqualsPrevious()) {
+        if (!currentDataEqualsPrevious(currentData)) {
 #ifdef DEBUG
             Serial.println(F("PRINTING PREVIOUS REPORT"));
-            printReport(previousData.report);
+            PrintReport::printReport(previousData.report);
             Serial.println(F("PRINTING CURRENT REPORT"));
-            printReport(currentData.report);
+            PrintReport::printReport(currentData.report);
             Serial.println(F("Current data does not equal previous"));
 #endif
-            createNewDiff();
+            timeElapsed = millis() - previousTime;
+            createNewDiff(currentData);
         }
-        timeElapsed = millis() - previousTime;
     }
 }
 
-bool InputRecording::currentDataEqualsPrevious() {
+bool InputRecording::currentDataEqualsPrevious(Gamecube_Data_t &currentData) {
     Gamecube_Report_t previousReport = previousData.report;
     Gamecube_Report_t currentReport = currentData.report;
     int16_t leftDiff =
@@ -70,76 +69,23 @@ bool InputRecording::currentDataEqualsPrevious() {
            cyAxisDiff < ALLOWABLE_AXIS_DRIFT;
 }
 
-void InputRecording::createNewDiff() {
+void InputRecording::createNewDiff(Gamecube_Data_t &currentData) {
     if (!inputDiffStore.canStoreDiff()) {
 #ifdef DEBUG
         Serial.println(F("Reached max storage value! Stopping recording!"));
 #endif
         return;
     }
-    uint16_t timeDiff = timeElapsed;
-    inputDiffStore.storeDiff(timeDiff, previousData.report, currentData.report);
-    previousData = currentData;
+    inputDiffStore.storeDiff(timeElapsed, previousData.report,
+                             currentData.report);
+    Gamecube_Data_t *dataPtr = &currentData;
+    memcpy(&previousData, dataPtr, sizeof(previousData));
     previousTime = millis();
 }
-
-#ifdef DEBUG
-void InputRecording::printReport(Gamecube_Report_t &report) {
-    // Prints the raw data from the controller
-    Serial.println();
-    Serial.println(F("Printing Gamecube controller report:"));
-    Serial.print(F("Start:\t"));
-    Serial.println(report.start);
-
-    Serial.print(F("Y:\t"));
-    Serial.println(report.y);
-
-    Serial.print(F("X:\t"));
-    Serial.println(report.x);
-
-    Serial.print(F("B:\t"));
-    Serial.println(report.b);
-
-    Serial.print(F("A:\t"));
-    Serial.println(report.a);
-
-    Serial.print(F("L:\t"));
-    Serial.println(report.l);
-    Serial.print(F("R:\t"));
-    Serial.println(report.r);
-    Serial.print(F("Z:\t"));
-    Serial.println(report.z);
-
-    Serial.print(F("Dup:\t"));
-    Serial.println(report.dup);
-    Serial.print(F("Ddown:\t"));
-    Serial.println(report.ddown);
-    Serial.print(F("Dright:\t"));
-    Serial.println(report.dright);
-    Serial.print(F("Dleft:\t"));
-    Serial.println(report.dleft);
-
-    Serial.print(F("xAxis:\t"));
-    Serial.println(report.xAxis, DEC);
-    Serial.print(F("yAxis:\t"));
-    Serial.println(report.yAxis, DEC);
-
-    Serial.print(F("cxAxis:\t"));
-    Serial.println(report.cxAxis, DEC);
-    Serial.print(F("cyAxis:\t"));
-    Serial.println(report.cyAxis, DEC);
-
-    Serial.print(F("L:\t"));
-    Serial.println(report.left, DEC);
-    Serial.print(F("R:\t"));
-    Serial.println(report.right, DEC);
-    Serial.println();
-}
-#endif
 
 InputDiffStore &InputRecording::getInputDiffStore() { return inputDiffStore; }
 
 void InputRecording::cleanUp() {
     recording = false;
-    inputDiffStore.storeLastTime(timeElapsed);
+    inputDiffStore.storeLastTime(millis() - previousTime);
 }

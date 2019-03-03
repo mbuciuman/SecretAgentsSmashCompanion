@@ -5,6 +5,10 @@
 #include <Nintendo.h>
 
 class InputModifier {
+  protected:
+    uint8_t currentWaitFrames = 0;
+    bool waitRemaining();
+
   public:
     virtual void modifyInput(Gamecube_Data_t &dataToModify) = 0;
     virtual void cleanUp() = 0;

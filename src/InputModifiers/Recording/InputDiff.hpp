@@ -13,7 +13,7 @@ struct SingleInputDiff {
 class InputDiff {
   private:
     uint16_t timeDiff;
-    SingleInputDiff singleDiffs[MAX_CONS_INPUTS];
+    SingleInputDiff singleDiffs[MAX_SINGLE_INPUT_DIFFS];
     void storeDiffs(Gamecube_Report_t &firstReport,
                     Gamecube_Report_t &secondReport);
     void storeSingleDiff(uint8_t firstVal, uint8_t secondVal,
@@ -28,7 +28,7 @@ class InputDiff {
     void applySingleDiffTo(SingleInputDiff &singleInputDiff,
                            Gamecube_Data_t &dataToModify);
     bool inputsDiffer(uint8_t first, uint8_t second, ControllerInput input);
-    void resetDiffs();
+    void reset();
 };
 
 #endif // GCTRAIN_INPUTMODIFIERS_RECORDING_INPUTDIFF_HPP_

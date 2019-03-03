@@ -43,6 +43,8 @@ class InputHandler {
     // Currently active input modifier (there's only one at a time)
     InputModifier *activeInputModifier;
 
+    void removeDPadInputs(Gamecube_Data_t &data);
+
   public:
     InputHandler();
     void processInput(Gamecube_Data_t &data);
