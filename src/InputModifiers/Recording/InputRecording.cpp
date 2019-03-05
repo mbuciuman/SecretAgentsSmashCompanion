@@ -5,9 +5,9 @@
  * an empty Input Change store.
  *
  */
-InputRecording::InputRecording()
+InputRecording::InputRecording(InputChangeStore &inputChangeStore)
     : previousData(Gamecube_Data_t()), timeElapsed(0), previousTime(0),
-      recording(false), inputChangeStore() {}
+      recording(false), inputChangeStore(inputChangeStore) {}
 
 /**
  * @brief Starts the recording of inputs by initializing (or re-initializing)
@@ -113,13 +113,6 @@ void InputRecording::storeNewChange(Gamecube_Data_t &currentData) {
                                  currentData.report);
     previousData = currentData;
     previousTime = millis();
-}
-
-/**
- * @brief Returns a reference to this class's Input Change store.
- */
-InputChangeStore &InputRecording::getInputChangeStore() {
-    return inputChangeStore;
 }
 
 /**

@@ -9,7 +9,7 @@
 enum class Direction : uint8_t { LEFT, UP, RIGHT, DOWN, NO_DIR };
 // enum representing (useful) controller inputs
 enum class ControllerInput : uint8_t {
-    A = 0,
+    A,
     B,
     X,
     Y,
@@ -43,7 +43,7 @@ static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
 // maximum number of input changes to be stored
 // WARNING: when changing this, check the build's Data size to be smaller than
 // the possible amount that one can store on the microcontroller
-static const uint8_t MAX_STORE_SIZE = 23;
+static const uint8_t MAX_STORE_SIZE = 90;
 
 // frames to wait between inputs
 static const uint8_t WAIT_FRAMES = 45;
@@ -55,5 +55,9 @@ static const uint8_t WAIT_FRAMES = 45;
 
 // uncommenting enables Gamecube writing
 #define WRITE
+
+// arbitrary millis to wait after controller read/write error (used by Nicohood
+// in examples)
+static const uint8_t ERR_DELAY = 100;
 
 #endif // SASC_CONSTANTS_HPP_

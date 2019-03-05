@@ -17,9 +17,9 @@ static LeftRightDI LEFT_RIGHT_DI = LeftRightDI();
 static RandomDI RANDOM_DI = RandomDI();
 static MashAirdodge MASH_AIRDODGE = MashAirdodge();
 static MashJump MASH_JUMP = MashJump();
-static InputRecording INPUT_RECORDING = InputRecording();
-static InputPlayback INPUT_PLAYBACK =
-    InputPlayback(INPUT_RECORDING.getInputChangeStore());
+static InputChangeStore INPUT_CHANGE_STORE = InputChangeStore();
+static InputRecording INPUT_RECORDING = InputRecording(INPUT_CHANGE_STORE);
+static InputPlayback INPUT_PLAYBACK = InputPlayback(INPUT_CHANGE_STORE);
 
 // constants for list size for each direction
 static const uint8_t LEFT_MOD_SIZE = 2;

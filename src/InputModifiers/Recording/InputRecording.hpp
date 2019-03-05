@@ -24,10 +24,10 @@ class InputRecording : public InputModifier {
     // boolean flag representing if actively recording
     bool recording;
     // object for storing input changes
-    InputChangeStore inputChangeStore;
+    InputChangeStore &inputChangeStore;
 
   public:
-    explicit InputRecording();
+    explicit InputRecording(InputChangeStore &inputChangeStore);
     void startRecording(Gamecube_Data_t &initialData);
     void modifyInput(Gamecube_Data_t &currentData);
     bool currentDataEqualsPrevious(Gamecube_Data_t &currentData);

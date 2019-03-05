@@ -28,9 +28,8 @@ typedef struct __attribute__((packed)) {
     uint8_t cxAxis;
     uint8_t cyAxis;
 } SerializedController;
-#ifdef _MSC_VER
-#pragma pack(pop)
-#endif
+static_assert(sizeof(SerializedController) == 7,
+              "SerializedController not of size 7!");
 
 /**
  * @brief Object representing the change in controller inputs over a given
@@ -51,5 +50,6 @@ class InputChange {
                     Gamecube_Report_t &secondReport);
     void applyTo(Gamecube_Data_t &dataToModify);
 };
+static_assert(sizeof(InputChange) == 9, "InputChange not of size 9");
 
 #endif // SASC_INPUTMODIFIERS_RECORDING_INPUTCHANGE_HPP_
