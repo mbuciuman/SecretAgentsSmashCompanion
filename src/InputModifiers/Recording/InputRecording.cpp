@@ -2,16 +2,16 @@
 
 /**
  * @brief Construct a new Input Recording:: Input Recording object. Initializes
- * an empty input diff store.
+ * an empty Input Change store.
  *
  */
 InputRecording::InputRecording()
     : previousData(Gamecube_Data_t()), timeElapsed(0), previousTime(0),
-      recording(false), inputDiffStore() {}
+      recording(false), inputChangeStore() {}
 
 /**
  * @brief Starts the recording of inputs by initializing (or re-initializing)
- * all class vars. Also clears the input diff store.
+ * all class vars. Also clears the Input Change Store.
  *
  * @param currentData The current controller input data
  */
@@ -19,10 +19,9 @@ void InputRecording::startRecording(Gamecube_Data_t &currentData) {
 #ifdef DEBUG
     Serial.print(F("Starting recording"));
 #endif
-    inputDiffStore.reset();
-    inputDiffStore.initialize(currentData);
-    Gamecube_Data_t *dataPtr = &currentData;
-    memcpy(&previousData, dataPtr, sizeof(previousData));
+    inputChangeStore.reset();
+    inputChangeStore.initialize(currentData);
+    previousData = currentData;
     timeElapsed = 0;
     previousTime = millis();
     recording = true;
@@ -35,8 +34,8 @@ void InputRecording::startRecording(Gamecube_Data_t &currentData) {
  * class vars.
  *
  * The main logic checks to see if the previously stored input data differs from
- * the current controller input data, then stores the difference between the
- * input data into the input diff store.
+ * the current controller input data, then stores the changes between the
+ * input data into the Input Change store.
  *
  * @param currentData
  */
@@ -56,7 +55,7 @@ void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
             Serial.println(F("Current data does not equal previous"));
 #endif
             timeElapsed = millis() - previousTime;
-            createNewDiff(currentData);
+            storeNewChange(currentData);
         }
     }
 }
@@ -99,28 +98,29 @@ bool InputRecording::currentDataEqualsPrevious(Gamecube_Data_t &currentData) {
 }
 
 /**
- * @brief Creates and stores a new input diff in the input diff store.
+ * @brief Creates and stores a new Input Change in the Input Change store.
  *
  * @param currentData current controller data
  */
-void InputRecording::createNewDiff(Gamecube_Data_t &currentData) {
-    if (!inputDiffStore.canStoreDiff()) {
+void InputRecording::storeNewChange(Gamecube_Data_t &currentData) {
+    if (!inputChangeStore.canStoreChange()) {
 #ifdef DEBUG
         Serial.println(F("Reached max storage value! Stopping recording!"));
 #endif
         return;
     }
-    inputDiffStore.storeDiff(timeElapsed, previousData.report,
-                             currentData.report);
-    Gamecube_Data_t *dataPtr = &currentData;
-    memcpy(&previousData, dataPtr, sizeof(previousData));
+    inputChangeStore.storeChange(timeElapsed, previousData.report,
+                                 currentData.report);
+    previousData = currentData;
     previousTime = millis();
 }
 
 /**
- * @brief Returns a reference to this class's input diff store.
+ * @brief Returns a reference to this class's Input Change store.
  */
-InputDiffStore &InputRecording::getInputDiffStore() { return inputDiffStore; }
+InputChangeStore &InputRecording::getInputChangeStore() {
+    return inputChangeStore;
+}
 
 /**
  * @brief Clean up method which stops recording and stores the time between the
@@ -128,5 +128,5 @@ InputDiffStore &InputRecording::getInputDiffStore() { return inputDiffStore; }
  */
 void InputRecording::cleanUp() {
     recording = false;
-    inputDiffStore.storeLastTime(millis() - previousTime);
+    inputChangeStore.storeLastTime(millis() - previousTime);
 }

@@ -12,14 +12,14 @@
 #include <Nintendo.h>
 
 // static declarations of all modifiers
-static NoModifier noModifier = NoModifier();
-static LeftRightDI leftRightDI = LeftRightDI();
-static RandomDI randomDI = RandomDI();
-static MashAirdodge mashAirdodge = MashAirdodge();
-static MashJump mashJump = MashJump();
-static InputRecording inputRecording = InputRecording();
-static InputPlayback inputPlayback =
-    InputPlayback(inputRecording.getInputDiffStore());
+static NoModifier NO_MODIFIER = NoModifier();
+static LeftRightDI LEFT_RIGHT_DI = LeftRightDI();
+static RandomDI RANDOM_DI = RandomDI();
+static MashAirdodge MASH_AIRDODGE = MashAirdodge();
+static MashJump MASH_JUMP = MashJump();
+static InputRecording INPUT_RECORDING = InputRecording();
+static InputPlayback INPUT_PLAYBACK =
+    InputPlayback(INPUT_RECORDING.getInputChangeStore());
 
 // constants for list size for each direction
 static const uint8_t LEFT_MOD_SIZE = 2;
@@ -57,10 +57,10 @@ class InputHandler {
     Direction currentDirection;
 
     // the arrays representing each DPad direction's assinged modifiers
-    InputModifier *leftModifiers[2];
-    InputModifier *upModifiers[1];
-    InputModifier *rightModifiers[2];
-    InputModifier *downModifiers[1];
+    InputModifier *leftModifiers[LEFT_MOD_SIZE];
+    InputModifier *upModifiers[UP_MOD_SIZE];
+    InputModifier *rightModifiers[RIGHT_MOD_SIZE];
+    InputModifier *downModifiers[DOWN_MOD_SIZE];
 
     // Currently active input modifier (there's only one at a time)
     InputModifier *activeInputModifier;
@@ -71,6 +71,7 @@ class InputHandler {
     InputHandler();
     void processInput(Gamecube_Data_t &data);
     void updateCurrentState(Gamecube_Report_t &report);
+    void updateDpadButtonState(uint8_t input, bool &dirPressed);
     bool directionReleased(uint8_t input, bool &dirPressed);
     void updateActiveInputModifier(Direction newDirection,
                                    InputModifier *modifiers[],

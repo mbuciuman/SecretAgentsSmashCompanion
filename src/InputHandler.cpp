@@ -7,10 +7,11 @@
  */
 InputHandler::InputHandler()
     : leftPressed(false), upPressed(false), rightPressed(false),
-      downPressed(false), currentIndex(0), currentDirection(Direction::NO_DIR),
-      leftModifiers{&leftRightDI, &randomDI}, upModifiers{&inputPlayback},
-      rightModifiers{&mashJump, &mashAirdodge}, downModifiers{&inputRecording},
-      activeInputModifier(&noModifier) {}
+      downPressed(false), currentIndex(0),
+      currentDirection(Direction::NO_DIR), leftModifiers{&LEFT_RIGHT_DI,
+                                                         &RANDOM_DI},
+      upModifiers{&INPUT_PLAYBACK}, rightModifiers{&MASH_JUMP, &MASH_AIRDODGE},
+      downModifiers{&INPUT_RECORDING}, activeInputModifier(&NO_MODIFIER) {}
 
 /**
  * @brief Given a controller's data, modifies it based on the active input
@@ -32,6 +33,7 @@ void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
 #ifdef DEBUG
         Serial.println(F("le_re"));
 #endif
+
         updateActiveInputModifier(Direction::LEFT, leftModifiers,
                                   LEFT_MOD_SIZE);
     }
@@ -55,21 +57,21 @@ void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
         updateActiveInputModifier(Direction::DOWN, downModifiers,
                                   DOWN_MOD_SIZE);
     }
+    updateDpadButtonState(report.dleft, leftPressed);
+    updateDpadButtonState(report.dup, upPressed);
+    updateDpadButtonState(report.ddown, downPressed);
+    updateDpadButtonState(report.dright, rightPressed);
+}
+
+void InputHandler::updateDpadButtonState(uint8_t input, bool &dirPressed) {
+    dirPressed = input != 1;
 }
 
 /**
  * @brief Checks to see if the given DPad input was released
  */
 bool InputHandler::directionReleased(uint8_t input, bool &dirPressed) {
-    if (input == 1) {
-        // direction is pressed if input is high
-        dirPressed = true;
-    } else if (dirPressed) {
-        // direction released if input is now low but was previously high
-        dirPressed = false;
-        return true;
-    }
-    return false;
+    return input != 1 && dirPressed;
 }
 
 /**
@@ -101,7 +103,7 @@ InputModifier *InputHandler::getNextModifier(Direction newDirection,
     } else {
         currentDirection = Direction::NO_DIR;
         currentIndex = 0;
-        return &noModifier;
+        return &NO_MODIFIER;
     }
 }
 

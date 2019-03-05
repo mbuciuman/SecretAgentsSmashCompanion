@@ -14,10 +14,10 @@ enum class ControllerInput : uint8_t {
     X,
     Y,
     L,
-    L_ANALOG,
     R,
-    R_ANALOG,
     Z,
+    L_ANALOG,
+    R_ANALOG,
     XAXIS,
     YAXIS,
     C_XAXIS,
@@ -40,17 +40,10 @@ static const uint8_t AVG_AXIS_VAL = 127;
 // below, do not record it
 static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
 
-// maximum number of single input changes at a time (13 total possible):
-// A, B, X, Y, Z, L, L (analog), R, R (analog), Analog stick X Axis, Analog
-// stick Y Axis, C-Stick X Axis, C-Stick Y Axis
-static const uint8_t MAX_SINGLE_INPUT_DIFFS = 13;
-
-// maximum number of input diffs to be stored
-// WARNING: when setting this, check the build's Data size to be smaller than
-// the Microcontroller's A single button diff [SingleInputDiff] is 6 bytes, so
-// each incrementing of the input diffs stored below is 6 bytes *
-// MAX_SINGLE_INPUT_DIFFS
-static const uint8_t MAX_STORE_SIZE = 20;
+// maximum number of input changes to be stored
+// WARNING: when changing this, check the build's Data size to be smaller than
+// the possible amount that one can store on the microcontroller
+static const uint8_t MAX_STORE_SIZE = 22;
 
 // frames to wait between inputs
 static const uint8_t WAIT_FRAMES = 45;

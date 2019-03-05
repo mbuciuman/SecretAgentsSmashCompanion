@@ -2,13 +2,14 @@
 
 /**
  * @brief Construct a new Input Playback:: Input Playback object. Requires a
- * reference to an InputDiffStore.
+ * reference to an InputChangeStore.
  *
- * @param inputDiffStore
+ * @param inputCHangeStore
  */
-InputPlayback::InputPlayback(InputDiffStore &inputDiffStore)
+InputPlayback::InputPlayback(InputChangeStore &inputChangeStore)
     : currentData(Gamecube_Data_t()), playingBack(false), timeElapsed(0),
-      startTime(0), currInputDiffIndex(0), inputDiffStore(inputDiffStore) {}
+      startTime(0), currInputChangeIndex(0),
+      inputChangeStore(inputChangeStore) {}
 
 /**
  * @brief Starts playback by initializing (or re-initializing) all variables.
@@ -16,10 +17,10 @@ InputPlayback::InputPlayback(InputDiffStore &inputDiffStore)
  *
  */
 void InputPlayback::startPlayback() {
-    currentData = inputDiffStore.getInitialData();
+    currentData = inputChangeStore.getInitialData();
     timeElapsed = 0;
     startTime = millis();
-    currInputDiffIndex = 0;
+    currInputChangeIndex = 0;
     playingBack = true;
 }
 
@@ -34,8 +35,9 @@ void InputPlayback::startPlayback() {
  * representing the input as it was recorded. The given 'dataToModify' is
  * continuously overridden with the 'currentData' values during playback.
  *
- * Once all diffs have been applied to 'currentData', then we just have to wait
- * for the time between the last input diff and when the recording stopped.
+ * Once all input changes have been applied to 'currentData', then we just have
+ * to wait for the time between the last input change and when the recording
+ * stopped.
  *
  * @param dataToModify
  */
@@ -49,22 +51,22 @@ void InputPlayback::modifyInput(Gamecube_Data_t &dataToModify) {
         Serial.println(F("Initializing"));
 #endif
         startPlayback();
-    } else if (nextDiffExists()) {
+    } else if (nextChangeExists()) {
 #ifdef DEBUG
-        Serial.println(F("Next diff exists!"));
+        Serial.println(F("Next input change exists!"));
 #endif
-        if (canApplyNextDiff()) {
+        if (canApplyNextChange()) {
 #ifdef DEBUG
-            Serial.println(F("Applying next diff!"));
+            Serial.println(F("Applying next change!"));
 #endif
-            applyNextDiff();
+            applyNextChange();
             startTime = millis();
         }
         modifyWithCurrentData(dataToModify);
 #ifdef DEBUG
         Serial.println(timeElapsed);
 #endif
-    } else if (timeElapsed < inputDiffStore.getLastTime()) {
+    } else if (timeElapsed < inputChangeStore.getLastTime()) {
 #ifdef DEBUG
         Serial.println("Waiting for last time");
 #endif
@@ -78,28 +80,28 @@ void InputPlayback::modifyInput(Gamecube_Data_t &dataToModify) {
 }
 
 /**
- * @brief Checks to see if there is another diff remaining.
+ * @brief Checks to see if there is another input change remaining.
  */
-bool InputPlayback::nextDiffExists() {
-    return currInputDiffIndex < inputDiffStore.getTotalDiffs();
+bool InputPlayback::nextChangeExists() {
+    return currInputChangeIndex < inputChangeStore.getTotalChanges();
 }
 
 /**
- * @brief Checks to see if enough time has elapsed before the next diff
+ * @brief Checks to see if enough time has elapsed before the next input change
  * should be applied.
  */
-bool InputPlayback::canApplyNextDiff() {
+bool InputPlayback::canApplyNextChange() {
     return timeElapsed >
-           inputDiffStore.getDiff(currInputDiffIndex).getTimeDiff();
+           inputChangeStore.getInputChange(currInputChangeIndex).getTimeDiff();
 }
 
 /**
- * @brief Applies the next diff to the 'currentData' var representing
+ * @brief Applies the next input change to the 'currentData' var representing
  * the recorded input
  */
-void InputPlayback::applyNextDiff() {
-    inputDiffStore.getDiff(currInputDiffIndex).applyTo(currentData);
-    currInputDiffIndex++;
+void InputPlayback::applyNextChange() {
+    inputChangeStore.getInputChange(currInputChangeIndex).applyTo(currentData);
+    currInputChangeIndex++;
 }
 
 /**
@@ -117,8 +119,7 @@ void InputPlayback::modifyWithCurrentData(Gamecube_Data_t &dataToModify) {
     uint8_t dpadRight = dataToModify.report.dright;
     uint8_t dpadDown = dataToModify.report.ddown;
 
-    Gamecube_Data_t *dataPtr = &currentData;
-    memcpy(&dataToModify, dataPtr, sizeof(dataToModify));
+    dataToModify = currentData;
 
     dataToModify.report.dleft = dpadLeft;
     dataToModify.report.dup = dpadUp;
