@@ -11,21 +11,21 @@
 #include "InputModifiers/Recording/InputRecording.hpp"
 #include <Nintendo.h>
 
-// static declarations of all modifiers
-static NoModifier NO_MODIFIER = NoModifier();
-static LeftRightDI LEFT_RIGHT_DI = LeftRightDI();
-static RandomDI RANDOM_DI = RandomDI();
-static MashAirdodge MASH_AIRDODGE = MashAirdodge();
-static MashJump MASH_JUMP = MashJump();
-static InputChangeStore INPUT_CHANGE_STORE = InputChangeStore();
-static InputRecording INPUT_RECORDING = InputRecording(INPUT_CHANGE_STORE);
-static InputPlayback INPUT_PLAYBACK = InputPlayback(INPUT_CHANGE_STORE);
+// declarations of all input modifiers
+extern NoModifier NO_MODIFIER;
+extern LeftRightDI LEFT_RIGHT_DI;
+extern RandomDI RANDOM_DI;
+extern MashAirdodge MASH_AIRDODGE;
+extern MashJump MASH_JUMP;
+extern InputChangeStore INPUT_CHANGE_STORE;
+extern InputRecording INPUT_RECORDING;
+extern InputPlayback INPUT_PLAYBACK;
 
 // constants for list size for each direction
-static const uint8_t LEFT_MOD_SIZE = 2;
-static const uint8_t UP_MOD_SIZE = 1;
-static const uint8_t RIGHT_MOD_SIZE = 2;
-static const uint8_t DOWN_MOD_SIZE = 1;
+const uint8_t LEFT_MOD_SIZE = 2;
+const uint8_t UP_MOD_SIZE = 1;
+const uint8_t RIGHT_MOD_SIZE = 2;
+const uint8_t DOWN_MOD_SIZE = 1;
 
 /**
  * @brief Modifies given controller input based on internal state

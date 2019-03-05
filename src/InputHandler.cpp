@@ -1,5 +1,15 @@
 #include "InputHandler.hpp"
 
+// Input modifier definitions
+NoModifier NO_MODIFIER = NoModifier();
+LeftRightDI LEFT_RIGHT_DI = LeftRightDI();
+RandomDI RANDOM_DI = RandomDI();
+MashJump MASH_JUMP = MashJump();
+MashAirdodge MASH_AIRDODGE = MashAirdodge();
+InputChangeStore INPUT_CHANGE_STORE = InputChangeStore();
+InputRecording INPUT_RECORDING = InputRecording(INPUT_CHANGE_STORE);
+InputPlayback INPUT_PLAYBACK = InputPlayback(INPUT_CHANGE_STORE);
+
 /**
  * @brief Construct a new Input Handler:: Input Handler object. This is also
  * where each DPad's direction is given its list of input modifiers.
