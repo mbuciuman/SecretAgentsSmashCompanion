@@ -16,6 +16,9 @@ I personally found PlatformIO in conjunction with Visual Studio Code to be bette
 
 PlatformIO can be installed as an extension in Visual Studio Code: https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide
 
+#### Setting up Nicohood/Nintendo Library
+The Nintendo library contains all the APIs for interfacing with the controller and console. You can install it by navigating to the "Libraries" in PlatformIO, searching for the "Nintendo" library, and then selecting "Install".
+
 #### Building and Uploading to the Arduino Nano
 
 Connect your Arduino Nano and click on the PlatformIO icon on Visual Studio Code's Activity bar. Select "Upload" from the "Project Tasks", and PlatformIO will begin to build and upload the code to the connected Arduino.
