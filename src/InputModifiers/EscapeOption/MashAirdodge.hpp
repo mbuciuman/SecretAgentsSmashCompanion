@@ -6,7 +6,6 @@
 
 /**
  * @brief Input modifier which mashes air-dodge inputs (L)
- *
  */
 class MashAirdodge : public InputModifier {
   private:

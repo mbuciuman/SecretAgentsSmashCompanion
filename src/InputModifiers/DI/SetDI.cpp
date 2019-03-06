@@ -10,7 +10,7 @@ void SetDI::modifyInput(Gamecube_Data_t &dataToModify) {
 #endif
     switch (nextState) {
     case State::DIR_UNSET:
-        // store the given directions
+        // store the given axis values
         storedXAxis = dataToModify.report.xAxis;
         storedYAxis = dataToModify.report.yAxis;
         nextState = State::DI;

@@ -8,7 +8,6 @@
 /**
  * @brief Input modifier which simulates random SDI by mashing random DI, then
  * returns to neutral, then repeats.
- *
  */
 class SetSDI : public InputModifier {
   private:
