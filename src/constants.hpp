@@ -45,8 +45,12 @@ static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
 // the possible amount that one can store on the microcontroller
 static const uint8_t MAX_STORE_SIZE = 190;
 
-// cycles to wait between inputs
-static const uint8_t WAIT_CYCLES = 30;
+// cycles to wait between input changes
+static const uint8_t WAIT_CYCLES = 15;
+
+// constant defining baud rate for serial logging
+// NOTE: SHOULD MATCH 'monitor_speed' IN 'platformio.ini'
+static const uint32_t BAUD_RATE = 115200;
 
 // uncommenting enables heavy serial logging
 // WARNING: should be paired with commenting WRITE below as serial logging slows
@@ -56,8 +60,8 @@ static const uint8_t WAIT_CYCLES = 30;
 // uncommenting enables Gamecube writing
 #define WRITE
 
-// arbitrary millis to wait after controller read/write error (used by Nicohood
-// in examples)
+// arbitrary millis to wait after controller read/write error (used by
+// Nicohood in examples)
 static const uint8_t ERR_DELAY = 100;
 
 #endif // SASC_CONSTANTS_HPP_

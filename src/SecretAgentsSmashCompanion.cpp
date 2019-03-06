@@ -14,13 +14,13 @@
 #include <time.h>
 
 // Declare a Gamecube Controller
-static CGamecubeController gcController(CONTROLLER_DATA_PIN);
+CGamecubeController gcController(CONTROLLER_DATA_PIN);
 
 // Declare Gamecube Console
-static CGamecubeConsole gcConsole(CONSOLE_DATA_PIN);
+CGamecubeConsole gcConsole(CONSOLE_DATA_PIN);
 
 // Declare Input Handler
-static InputHandler inputHandler = InputHandler();
+InputHandler inputHandler = InputHandler();
 
 void setup() {
     // seed random number generator
@@ -31,7 +31,7 @@ void setup() {
 
 #ifdef DEBUG
     // Start debug serial
-    Serial.begin(115200);
+    Serial.begin(BAUD_RATE);
 #endif
 }
 

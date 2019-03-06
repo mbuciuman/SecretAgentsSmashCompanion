@@ -2,6 +2,11 @@
 #define SASC_UTILITY_HPP_
 
 #ifdef DEBUG
+/**
+ * @brief Prints each of the report's vars to Serial
+ *
+ * @param report
+ */
 inline void printReport(Gamecube_Report_t &report) {
     Serial.println();
     Serial.println(F("Printing Gamecube controller report:"));

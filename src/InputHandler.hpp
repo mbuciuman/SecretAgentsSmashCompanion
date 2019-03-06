@@ -70,7 +70,7 @@ class InputHandler {
     InputHandler();
     void processInput(Gamecube_Data_t &data);
     void updateCurrentState(Gamecube_Report_t &report);
-    void updateDpadButtonState(const uint8_t input, bool dirPressed);
+    void updateDpadButtonState(const uint8_t input, bool &dirPressed);
     bool directionReleased(const uint8_t input, const bool dirPressed);
     void updateActiveInputModifier(const Direction newDirection,
                                    InputModifier *modifiers[],

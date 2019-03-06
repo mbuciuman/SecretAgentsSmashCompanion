@@ -40,30 +40,17 @@ void InputHandler::processInput(Gamecube_Data_t &data) {
 void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     // update active input modifier based on DPad changes
     if (directionReleased(report.dleft, leftPressed)) {
-#ifdef DEBUG
-        Serial.println(F("le_re"));
-#endif
-
         updateActiveInputModifier(Direction::LEFT, leftModifiers,
                                   LEFT_MOD_SIZE);
     }
     if (directionReleased(report.dup, upPressed)) {
-#ifdef DEBUG
-        Serial.println(F("up_re"));
-#endif
         updateActiveInputModifier(Direction::UP, upModifiers, UP_MOD_SIZE);
     }
     if (directionReleased(report.dright, rightPressed)) {
-#ifdef DEBUG
-        Serial.println(F("ri_re"));
-#endif
         updateActiveInputModifier(Direction::RIGHT, rightModifiers,
                                   RIGHT_MOD_SIZE);
     }
     if (directionReleased(report.ddown, downPressed)) {
-#ifdef DEBUG
-        Serial.println(F("do_re"));
-#endif
         updateActiveInputModifier(Direction::DOWN, downModifiers,
                                   DOWN_MOD_SIZE);
     }
@@ -73,8 +60,9 @@ void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     updateDpadButtonState(report.dright, rightPressed);
 }
 
-void InputHandler::updateDpadButtonState(const uint8_t input, bool dirPressed) {
-    dirPressed = input != 1;
+void InputHandler::updateDpadButtonState(const uint8_t input,
+                                         bool &dirPressed) {
+    dirPressed = input != 0;
 }
 
 /**
@@ -82,7 +70,7 @@ void InputHandler::updateDpadButtonState(const uint8_t input, bool dirPressed) {
  */
 bool InputHandler::directionReleased(const uint8_t input,
                                      const bool dirPressed) {
-    return input != 1 && dirPressed;
+    return input == 0 && dirPressed;
 }
 
 /**

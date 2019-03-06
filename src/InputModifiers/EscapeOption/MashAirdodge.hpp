@@ -4,6 +4,10 @@
 #include "../InputModifier.hpp"
 #include <Nintendo.h>
 
+/**
+ * @brief Input modifier which mashes air-dodge inputs (L)
+ *
+ */
 class MashAirdodge : public InputModifier {
   private:
     enum class State : char { NEUTRAL, AIRDODGE };
