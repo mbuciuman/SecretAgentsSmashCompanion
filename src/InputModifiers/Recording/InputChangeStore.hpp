@@ -1,8 +1,8 @@
 #ifndef SASC_INPUTMODIFIERS_RECORDING_INPUTCHANGESTORE_HPP_
 #define SASC_INPUTMODIFIERS_RECORDING_INPUTCHANGESTORE_HPP_
 
+#include "Constants.hpp"
 #include "InputChange.hpp"
-#include "constants.hpp"
 #include <Nintendo.h>
 
 /**
@@ -22,12 +22,13 @@ class InputChangeStore {
 
   public:
     InputChangeStore();
-    void initialize(Gamecube_Data_t &initialData);
+    void initialize(const Gamecube_Data_t &initialData);
     bool canStoreChange();
-    void storeChange(uint16_t timeDiff, Gamecube_Report_t &firstReport,
-                     Gamecube_Report_t &secondReport);
-    void storeLastTime(uint16_t lastTime);
-    InputChange &getInputChange(int index);
+    void storeChange(const uint16_t timeDiff,
+                     const Gamecube_Report_t &firstReport,
+                     const Gamecube_Report_t &secondReport);
+    void storeLastTime(const uint16_t lastTime);
+    InputChange &getInputChange(const int index);
     uint8_t getTotalChanges();
     uint16_t getLastTime();
     Gamecube_Data_t getInitialData();

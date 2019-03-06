@@ -40,14 +40,15 @@ class InputChange {
     // time elapsed between controller input changes in ms.
     uint16_t timeDiff;
     SerializedController controller;
-    void storeChanges(Gamecube_Report_t &firstReport,
-                      Gamecube_Report_t &secondReport);
+    void storeChanges(const Gamecube_Report_t &firstReport,
+                      const Gamecube_Report_t &secondReport);
 
   public:
     explicit InputChange();
     uint16_t getTimeDiff();
-    void initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
-                    Gamecube_Report_t &secondReport);
+    void initialize(const uint16_t timeDiff,
+                    const Gamecube_Report_t &firstReport,
+                    const Gamecube_Report_t &secondReport);
     void applyTo(Gamecube_Data_t &dataToModify);
 };
 static_assert(sizeof(InputChange) == 9, "InputChange not of size 9");

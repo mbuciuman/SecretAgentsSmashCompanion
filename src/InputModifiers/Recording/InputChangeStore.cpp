@@ -11,7 +11,7 @@ InputChangeStore::InputChangeStore() : inputChanges{}, totalChanges(0) {}
  *
  * @param initialData reference to current controller data
  */
-void InputChangeStore::initialize(Gamecube_Data_t &initialData) {
+void InputChangeStore::initialize(const Gamecube_Data_t &initialData) {
     this->initialData = initialData;
 }
 
@@ -30,9 +30,9 @@ bool InputChangeStore::canStoreChange() {
  * @param firstReport the first controller data
  * @param secondReport the second controller data
  */
-void InputChangeStore::storeChange(uint16_t timeDiff,
-                                   Gamecube_Report_t &firstReport,
-                                   Gamecube_Report_t &secondReport) {
+void InputChangeStore::storeChange(const uint16_t timeDiff,
+                                   const Gamecube_Report_t &firstReport,
+                                   const Gamecube_Report_t &secondReport) {
     inputChanges[totalChanges].initialize(timeDiff, firstReport, secondReport);
     totalChanges++;
 }
@@ -40,7 +40,7 @@ void InputChangeStore::storeChange(uint16_t timeDiff,
 /**
  * @brief Returns a reference to the Input Change stored at the given index.
  */
-InputChange &InputChangeStore::getInputChange(int index) {
+InputChange &InputChangeStore::getInputChange(const int index) {
     return inputChanges[index];
 }
 
@@ -55,7 +55,7 @@ uint8_t InputChangeStore::getTotalChanges() { return totalChanges; }
  *
  * @param lastTime time in milliseconds
  */
-void InputChangeStore::storeLastTime(uint16_t lastTime) {
+void InputChangeStore::storeLastTime(const uint16_t lastTime) {
     this->lastTime = lastTime;
 }
 

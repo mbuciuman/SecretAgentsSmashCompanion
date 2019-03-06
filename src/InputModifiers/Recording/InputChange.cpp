@@ -12,8 +12,9 @@ InputChange::InputChange() : timeDiff(0), controller() {}
  * @param firstReport the first controller input report
  * @param secondReport the second controller input report
  */
-void InputChange::initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
-                             Gamecube_Report_t &secondReport) {
+void InputChange::initialize(const uint16_t timeDiff,
+                             const Gamecube_Report_t &firstReport,
+                             const Gamecube_Report_t &secondReport) {
     this->timeDiff = timeDiff;
     storeChanges(firstReport, secondReport);
 }
@@ -21,8 +22,8 @@ void InputChange::initialize(uint16_t timeDiff, Gamecube_Report_t &firstReport,
 /**
  * @brief Stores the changes between both controller reports
  */
-void InputChange::storeChanges(Gamecube_Report_t &firstReport,
-                               Gamecube_Report_t &secondReport) {
+void InputChange::storeChanges(const Gamecube_Report_t &firstReport,
+                               const Gamecube_Report_t &secondReport) {
     controller.a = firstReport.a != secondReport.a;
     controller.b = firstReport.b != secondReport.b;
     controller.x = firstReport.x != secondReport.x;

@@ -73,14 +73,15 @@ void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
     updateDpadButtonState(report.dright, rightPressed);
 }
 
-void InputHandler::updateDpadButtonState(uint8_t input, bool &dirPressed) {
+void InputHandler::updateDpadButtonState(const uint8_t input, bool dirPressed) {
     dirPressed = input != 1;
 }
 
 /**
  * @brief Checks to see if the given DPad input was released
  */
-bool InputHandler::directionReleased(uint8_t input, bool &dirPressed) {
+bool InputHandler::directionReleased(const uint8_t input,
+                                     const bool dirPressed) {
     return input != 1 && dirPressed;
 }
 
@@ -88,9 +89,9 @@ bool InputHandler::directionReleased(uint8_t input, bool &dirPressed) {
  * @brief Update the active input modifier given the list of input modifiers and
  * its iterator
  */
-void InputHandler::updateActiveInputModifier(Direction newDirection,
+void InputHandler::updateActiveInputModifier(const Direction newDirection,
                                              InputModifier *modifiers[],
-                                             const uint8_t &maxArraySize) {
+                                             const uint8_t maxArraySize) {
     activeInputModifier->cleanUp();
     activeInputModifier =
         getNextModifier(newDirection, modifiers, maxArraySize);
@@ -100,9 +101,9 @@ void InputHandler::updateActiveInputModifier(Direction newDirection,
  * @brief Get the next input modifier from the given list and its current
  * iterator
  */
-InputModifier *InputHandler::getNextModifier(Direction newDirection,
+InputModifier *InputHandler::getNextModifier(const Direction newDirection,
                                              InputModifier *modifiers[],
-                                             const uint8_t &maxArraySize) {
+                                             const uint8_t maxArraySize) {
     if (currentDirection == newDirection && currentIndex + 1 < maxArraySize) {
         currentIndex++;
         return modifiers[currentIndex];
@@ -115,16 +116,4 @@ InputModifier *InputHandler::getNextModifier(Direction newDirection,
         currentIndex = 0;
         return &NO_MODIFIER;
     }
-}
-
-/**
- * @brief Zeroes the DPad inputs from the given controller data
- *
- * @param dataToModify given controller data
- */
-void InputHandler::removeDPadInputs(Gamecube_Data_t &dataToModify) {
-    dataToModify.report.dleft = 0;
-    dataToModify.report.dup = 0;
-    dataToModify.report.dright = 0;
-    dataToModify.report.ddown = 0;
 }

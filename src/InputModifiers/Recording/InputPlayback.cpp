@@ -110,7 +110,7 @@ void InputPlayback::applyNextChange() {
 void InputPlayback::modifyWithCurrentData(Gamecube_Data_t &dataToModify) {
 #ifdef DEBUG
     Serial.println(F("PRINTING CURRENT REPORT"));
-    PrintReport::printReport(dataToModify.report);
+    printReport(dataToModify.report);
 #endif
     // store dpad inputs, then overwrite copied dpad inputs to allow them to
     // pass through
@@ -127,7 +127,7 @@ void InputPlayback::modifyWithCurrentData(Gamecube_Data_t &dataToModify) {
     dataToModify.report.ddown = dpadDown;
 #ifdef DEBUG
     Serial.println(F("PRINTING MODIFIED REPORT"));
-    PrintReport::printReport(dataToModify.report);
+    printReport(dataToModify.report);
 #endif
 }
 

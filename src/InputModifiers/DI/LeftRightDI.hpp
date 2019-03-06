@@ -7,9 +7,8 @@
 
 class LeftRightDI : public InputModifier {
   private:
-    bool movingRight;
-    Direction nextDirection;
-    uint8_t currentWaitFrames;
+    enum class State { LEFT, RIGHT };
+    State nextState;
 
   public:
     LeftRightDI();

@@ -12,7 +12,7 @@
  */
 class SetSDI : public InputModifier {
   private:
-    enum class State : char { NEUTRAL, DI };
+    enum class State : char { DIR_UNSET, NEUTRAL, DI };
     State nextState;
     uint8_t storedXAxis;
     uint8_t storedYAxis;

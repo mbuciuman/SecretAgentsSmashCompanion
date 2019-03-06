@@ -12,8 +12,9 @@
  */
 class LeftRightSDI : public InputModifier {
   private:
+    enum class State { LEFT, NEUTRAL, RIGHT };
     bool movingRight;
-    Direction nextDirection;
+    State nextState;
 
   public:
     LeftRightSDI();

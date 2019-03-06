@@ -2,19 +2,18 @@
 #define SASC_INPUTMODIFIERS_DI_RANDOMDI_HPP_
 
 #include "../InputModifier.hpp"
+#include "Utility.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
+#include <stdlib.h>
+#include <time.h>
 
 /**
- * @brief Input modifier which mashes random DI, then returns to neutral, then
- * repeats
- *
+ * @brief Input modifier which mashes random DI by moving the control stick in a
+ * random direction every frame
  */
 class RandomDI : public InputModifier {
   private:
-    enum class State : char { NEUTRAL, DI };
-    State nextState;
-    uint8_t currentWaitFrames;
     uint8_t storedXAxis;
     uint8_t storedYAxis;
 

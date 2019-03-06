@@ -6,7 +6,7 @@
 #include "InputChangeStore.hpp"
 #include <Nintendo.h>
 #ifdef DEBUG
-#include "PrintReport.hpp"
+#include "Utility.hpp"
 #endif
 
 /**
@@ -28,10 +28,10 @@ class InputRecording : public InputModifier {
 
   public:
     explicit InputRecording(InputChangeStore &inputChangeStore);
-    void startRecording(Gamecube_Data_t &initialData);
+    void startRecording(const Gamecube_Data_t &initialData);
     void modifyInput(Gamecube_Data_t &currentData);
-    bool currentDataEqualsPrevious(Gamecube_Data_t &currentData);
-    void storeNewChange(Gamecube_Data_t &currentData);
+    bool currentDataEqualsPrevious(const Gamecube_Data_t &currentData);
+    void storeNewChange(const Gamecube_Data_t &currentData);
     void cleanUp();
     InputChangeStore &getInputChangeStore();
 };

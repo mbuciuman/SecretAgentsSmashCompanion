@@ -10,7 +10,7 @@
  */
 class InputModifier {
   protected:
-    uint8_t currentWaitFrames = 0;
+    uint8_t currentWaitCycles = 0;
     bool waitRemaining();
 
   public:

@@ -1,6 +1,7 @@
 #ifndef SASC_INPUTHANDLER_HPP_
 #define SASC_INPUTHANDLER_HPP_
 #include "Constants.hpp"
+#include "Utility.hpp"
 #include "InputModifiers/DI/LeftRightDI.hpp"
 #include "InputModifiers/DI/RandomDI.hpp"
 #include "InputModifiers/EscapeOption/MashAirdodge.hpp"
@@ -65,19 +66,17 @@ class InputHandler {
     // Currently active input modifier (there's only one at a time)
     InputModifier *activeInputModifier;
 
-    void removeDPadInputs(Gamecube_Data_t &data);
-
   public:
     InputHandler();
     void processInput(Gamecube_Data_t &data);
     void updateCurrentState(Gamecube_Report_t &report);
-    void updateDpadButtonState(uint8_t input, bool &dirPressed);
-    bool directionReleased(uint8_t input, bool &dirPressed);
-    void updateActiveInputModifier(Direction newDirection,
+    void updateDpadButtonState(const uint8_t input, bool dirPressed);
+    bool directionReleased(const uint8_t input, const bool dirPressed);
+    void updateActiveInputModifier(const Direction newDirection,
                                    InputModifier *modifiers[],
-                                   const uint8_t &maxArraySize);
-    InputModifier *getNextModifier(Direction newDirection,
+                                   const uint8_t maxArraySize);
+    InputModifier *getNextModifier(const Direction newDirection,
                                    InputModifier *modifiers[],
-                                   const uint8_t &maxArraySize);
+                                   const uint8_t maxArraySize);
 };
 #endif // SASC_INPUTHANDLER_HPP_

@@ -7,7 +7,7 @@
 #include "InputRecording.hpp"
 #include <Nintendo.h>
 #ifdef DEBUG
-#include "PrintReport.hpp"
+#include "Utility.hpp"
 #endif
 
 /**

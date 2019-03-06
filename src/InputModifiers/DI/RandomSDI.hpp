@@ -2,13 +2,15 @@
 #define SASC_INPUTMODIFIERS_DI_RANDOMSDI_HPP_
 
 #include "../InputModifier.hpp"
+#include "Utility.hpp"
 #include <Arduino.h>
 #include <Nintendo.h>
+#include <stdlib.h>
+#include <time.h>
 
 /**
  * @brief Input modifier which simulates random SDI by mashing random DI, then
  * returns to neutral, then repeats.
- *
  */
 class RandomSDI : public InputModifier {
   private:

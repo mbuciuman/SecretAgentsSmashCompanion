@@ -1,14 +1,16 @@
-#include "RandomSDI.hpp"
+#include "SetSDI.hpp"
 
-RandomSDI::RandomSDI()
-    : nextState(State::NEUTRAL), storedXAxis(AVG_AXIS_VAL),
+SetSDI::SetSDI()
+    : nextState(State::DIR_UNSET), storedXAxis(AVG_AXIS_VAL),
       storedYAxis(AVG_AXIS_VAL) {}
 
-void RandomSDI::modifyInput(Gamecube_Data_t &dataToModify) {
-#ifdef DEBUG
-    Serial.println(F("rdi_mi"));
-#endif
+void SetSDI::modifyInput(Gamecube_Data_t &dataToModify) {
     switch (nextState) {
+    case State::DIR_UNSET:
+        storedXAxis = dataToModify.report.xAxis;
+        storedYAxis = dataToModify.report.yAxis;
+        nextState = State::NEUTRAL;
+        break;
     case State::NEUTRAL:
         dataToModify.report.xAxis = AVG_AXIS_VAL;
         dataToModify.report.yAxis = AVG_AXIS_VAL;
@@ -23,12 +25,9 @@ void RandomSDI::modifyInput(Gamecube_Data_t &dataToModify) {
         if (waitRemaining()) {
             return;
         }
-        setInRandomDirection(storedXAxis, storedYAxis);
-        nextState = State::NEUTRAL;
+        nextState = State::DI;
         break;
     }
 }
 
-void RandomSDI::cleanUp() {
-    // nothing to do
-}
+void SetSDI::cleanUp() { nextState = State::DIR_UNSET; }

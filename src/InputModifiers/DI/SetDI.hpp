@@ -10,7 +10,8 @@
  */
 class SetDI : public InputModifier {
   private:
-    boolean directionSet;
+    enum class State : char { DIR_UNSET, DI };
+    State nextState;
     uint8_t storedXAxis;
     uint8_t storedYAxis;
 

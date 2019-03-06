@@ -15,7 +15,7 @@ InputRecording::InputRecording(InputChangeStore &inputChangeStore)
  *
  * @param currentData The current controller input data
  */
-void InputRecording::startRecording(Gamecube_Data_t &currentData) {
+void InputRecording::startRecording(const Gamecube_Data_t &currentData) {
 #ifdef DEBUG
     Serial.print(F("Starting recording"));
 #endif
@@ -49,9 +49,9 @@ void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
         if (!currentDataEqualsPrevious(currentData)) {
 #ifdef DEBUG
             Serial.println(F("PRINTING PREVIOUS REPORT"));
-            PrintReport::printReport(previousData.report);
+            printReport(previousData.report);
             Serial.println(F("PRINTING CURRENT REPORT"));
-            PrintReport::printReport(currentData.report);
+            printReport(currentData.report);
             Serial.println(F("Current data does not equal previous"));
 #endif
             timeElapsed = millis() - previousTime;
@@ -66,7 +66,8 @@ void InputRecording::modifyInput(Gamecube_Data_t &currentData) {
  *
  * @param currentData current controller data
  */
-bool InputRecording::currentDataEqualsPrevious(Gamecube_Data_t &currentData) {
+bool InputRecording::currentDataEqualsPrevious(
+    const Gamecube_Data_t &currentData) {
     Gamecube_Report_t previousReport = previousData.report;
     Gamecube_Report_t currentReport = currentData.report;
     int16_t leftDiff =
@@ -102,7 +103,7 @@ bool InputRecording::currentDataEqualsPrevious(Gamecube_Data_t &currentData) {
  *
  * @param currentData current controller data
  */
-void InputRecording::storeNewChange(Gamecube_Data_t &currentData) {
+void InputRecording::storeNewChange(const Gamecube_Data_t &currentData) {
     if (!inputChangeStore.canStoreChange()) {
 #ifdef DEBUG
         Serial.println(F("Reached max storage value! Stopping recording!"));

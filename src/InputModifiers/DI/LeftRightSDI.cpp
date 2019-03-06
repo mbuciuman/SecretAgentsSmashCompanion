@@ -1,49 +1,37 @@
 #include "LeftRightSDI.hpp"
 
-LeftRightSDI::LeftRightSDI()
-    : movingRight(true), nextDirection(Direction::LEFT) {}
+LeftRightSDI::LeftRightSDI() : movingRight(true), nextState(State::RIGHT) {}
 
 void LeftRightSDI::modifyInput(Gamecube_Data_t &dataToModify) {
 #ifdef DEBUG
     Serial.println(F("lrsdi_mi"));
 #endif
-    switch (nextDirection) {
-    case Direction::NO_DIR:
+    switch (nextState) {
+    case State::RIGHT:
+        dataToModify.report.xAxis = MAX_AXIS_VAL;
+        if (waitRemaining()) {
+            return;
+        }
+        nextState = State::NEUTRAL;
+        break;
+    case State::NEUTRAL:
         dataToModify.report.xAxis = AVG_AXIS_VAL;
-#ifdef DEBUG
-        Serial.println(F("Moving in NODIR"));
-#endif
         if (waitRemaining()) {
             return;
         }
         if (movingRight) {
-            nextDirection = Direction::RIGHT;
+            nextState = State::RIGHT;
         } else {
-            nextDirection = Direction::LEFT;
+            nextState = State::LEFT;
         }
         movingRight = !movingRight;
         break;
-    case Direction::RIGHT:
-        dataToModify.report.xAxis = MAX_AXIS_VAL;
-#ifdef DEBUG
-        Serial.println(F("Moving RIGHT"));
-#endif
-        if (waitRemaining()) {
-            return;
-        }
-        nextDirection = Direction::NO_DIR;
-        break;
-    case Direction::LEFT:
+    case State::LEFT:
         dataToModify.report.xAxis = MIN_AXIS_VAL;
-#ifdef DEBUG
-        Serial.println(F("Moving LEFT"));
-#endif
         if (waitRemaining()) {
             return;
         }
-        nextDirection = Direction::NO_DIR;
-        break;
-    default:
+        nextState = State::NEUTRAL;
         break;
     }
 }
