@@ -43,7 +43,7 @@ static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
 // maximum number of input changes to be stored
 // WARNING: when changing this, check the build's Data size to be smaller than
 // the possible amount that one can store on the microcontroller
-static const uint8_t MAX_STORE_SIZE = 190;
+static const uint8_t MAX_STORE_SIZE = 175;
 
 // cycles to wait between input changes
 static const uint8_t WAIT_CYCLES = 15;

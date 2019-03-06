@@ -1,21 +1,29 @@
 #ifndef SASC_INPUTHANDLER_HPP_
 #define SASC_INPUTHANDLER_HPP_
 #include "Constants.hpp"
-#include "Utility.hpp"
 #include "InputModifiers/DI/LeftRightDI.hpp"
+#include "InputModifiers/DI/LeftRightSDI.hpp"
 #include "InputModifiers/DI/RandomDI.hpp"
+#include "InputModifiers/DI/RandomSDI.hpp"
+#include "InputModifiers/DI/SetDI.hpp"
+#include "InputModifiers/DI/SetSDI.hpp"
 #include "InputModifiers/EscapeOption/MashAirdodge.hpp"
 #include "InputModifiers/EscapeOption/MashJump.hpp"
 #include "InputModifiers/InputModifier.hpp"
 #include "InputModifiers/NoModifier.hpp"
 #include "InputModifiers/Recording/InputPlayback.hpp"
 #include "InputModifiers/Recording/InputRecording.hpp"
+#include "Utility.hpp"
 #include <Nintendo.h>
 
 // declarations of all input modifiers
 extern NoModifier NO_MODIFIER;
 extern LeftRightDI LEFT_RIGHT_DI;
 extern RandomDI RANDOM_DI;
+extern SetDI SET_DI;
+extern LeftRightSDI LEFT_RIGHT_SDI;
+extern RandomSDI RANDOM_SDI;
+extern SetSDI SET_SDI;
 extern MashAirdodge MASH_AIRDODGE;
 extern MashJump MASH_JUMP;
 extern InputChangeStore INPUT_CHANGE_STORE;
@@ -23,7 +31,7 @@ extern InputRecording INPUT_RECORDING;
 extern InputPlayback INPUT_PLAYBACK;
 
 // constants for list size for each direction
-const uint8_t LEFT_MOD_SIZE = 2;
+const uint8_t LEFT_MOD_SIZE = 6;
 const uint8_t UP_MOD_SIZE = 1;
 const uint8_t RIGHT_MOD_SIZE = 2;
 const uint8_t DOWN_MOD_SIZE = 1;
