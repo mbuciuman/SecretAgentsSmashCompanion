@@ -31,7 +31,7 @@ void SetSDI::modifyInput(Gamecube_Data_t &dataToModify) {
         if (waitRemaining()) {
             return;
         }
-        nextState = State::DI;
+        nextState = State::NEUTRAL;
         break;
     }
 }

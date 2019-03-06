@@ -21,9 +21,9 @@ InputPlayback INPUT_PLAYBACK = InputPlayback(INPUT_CHANGE_STORE);
  */
 InputHandler::InputHandler()
     : leftPressed(false), upPressed(false), rightPressed(false),
-      downPressed(false), currentIndex(0),
-      currentDirection(Direction::NO_DIR), leftModifiers{&LEFT_RIGHT_DI,
-                                                         &RANDOM_DI},
+      downPressed(false), currentIndex(0), currentDirection(Direction::NO_DIR),
+      leftModifiers{&LEFT_RIGHT_DI,  &RANDOM_DI,  &SET_DI,
+                    &LEFT_RIGHT_SDI, &RANDOM_SDI, &SET_SDI},
       upModifiers{&INPUT_PLAYBACK}, rightModifiers{&MASH_JUMP, &MASH_AIRDODGE},
       downModifiers{&INPUT_RECORDING}, activeInputModifier(&NO_MODIFIER) {}
 
