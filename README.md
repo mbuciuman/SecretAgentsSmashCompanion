@@ -46,7 +46,7 @@ __NOTE:__ If you get the Arduino Nano Clone, you may need to change the `board` 
 * Bi-directional Logic Level Converter: https://www.sparkfun.com/products/12009
 * Gamecube Controller Extension Cable: https://www.amazon.com/gp/product/B001AI7CF2/ref=oh_aui_search_asin_title?ie=UTF8&psc=1
 * Header pins (__NOTE:__ should only be needed if the Arduino or the BLLC do not come with header pins already): https://www.sparkfun.com/products/116
-* Project box (optional)
+* Project box (optional): https://www.amazon.com/gp/product/B00CSRW6UU/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
 
 #### Assemble Components
 Once you have all the parts, you should be able to solder the Arduino Nano and the Bi-directional Logic Level Converter to their header pins, and then directly to the PCB.
@@ -75,7 +75,7 @@ After determining which wires represent which inputs, you should be able to stri
 
 I *HIGHLY* recommend using hot glue on the GC_CONS and GC_CONT inputs as the wires are flimsy and can be easily pulled out of the board.
 
-Also, putting the board into a project box will give it further protection.
+Also, putting the board into a project box will give it further protection. The one I linked above is a transparent, polycarbonate one that I personally used.
 
 #### Connecting to Console
 The adapter should work immediately after plugging it into the console, and you should be able to see the controller being detected by the Gamecube/Switch as if it was just another controller. The Arduino Nano's light should be on showing that it's powered.
