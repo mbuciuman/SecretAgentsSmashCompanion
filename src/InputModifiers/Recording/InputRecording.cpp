@@ -1,9 +1,7 @@
 #include "InputRecording.hpp"
 
 /**
- * @brief Construct a new Input Recording:: Input Recording object. Initializes
- * an empty Input Change store.
- *
+ * @brief Construct a new Input Recording:: Input Recording object
  */
 InputRecording::InputRecording(InputChangeStore &inputChangeStore)
     : previousData(Gamecube_Data_t()), timeElapsed(0), previousTime(0),

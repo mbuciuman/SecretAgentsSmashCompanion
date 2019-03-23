@@ -38,15 +38,17 @@ static const uint8_t AVG_AXIS_VAL = 127;
 
 // if any axis (analog stick, c-stick, and L and R axes) changes by a difference
 // below, do not record it
-static const uint8_t ALLOWABLE_AXIS_DRIFT = 10;
+static const uint8_t ALLOWABLE_AXIS_DRIFT = 5;
 
 // maximum number of input changes to be stored
-// WARNING: when changing this, check the build's Data size to be smaller than
-// the possible amount that one can store on the microcontroller
+// WARNING: when changing this, check the build's Data/RAM usage to be smaller
+// than the possible amount that one can store on the microcontroller. I also
+// generally would make sure it's around <100 bytes less due to some potential
+// dynamic allocation done by the Nicohood/Nintendo lib
 static const uint8_t MAX_STORE_SIZE = 180;
 
 // cycles to wait between input changes
-static const uint8_t WAIT_CYCLES = 15;
+static const uint8_t WAIT_CYCLES = 10;
 
 // constant defining baud rate for serial logging
 // NOTE: SHOULD MATCH 'monitor_speed' IN 'platformio.ini'
@@ -54,7 +56,9 @@ static const uint32_t BAUD_RATE = 115200;
 
 // uncommenting enables heavy serial logging
 // WARNING: should be paired with commenting WRITE below as serial logging slows
-// down output to the point where it fails to write
+// down output to the point where it fails to write.
+// WARNING (2): uncommenting this also greatly increases the RAM usage, so it's
+// recommended to also decrement MAX_STORE_SIZE
 //#define DEBUG
 
 // uncommenting enables Gamecube writing

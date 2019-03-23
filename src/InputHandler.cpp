@@ -13,6 +13,28 @@ MashAirdodge MASH_AIRDODGE = MashAirdodge();
 InputChangeStore INPUT_CHANGE_STORE = InputChangeStore();
 InputRecording INPUT_RECORDING = InputRecording(INPUT_CHANGE_STORE);
 InputPlayback INPUT_PLAYBACK = InputPlayback(INPUT_CHANGE_STORE);
+UpSmashOOS UP_SMASH_OOS = UpSmashOOS();
+UpBOOS UP_B_OOS = UpBOOS();
+NairOOS NAIR_OOS = NairOOS();
+GrabOOS GRAB_OOS = GrabOOS();
+
+// constants for list size for each training group
+const uint8_t DI_TRAINING_SIZE = 6;
+const uint8_t OUT_OF_SHIELD_TRAINING_SIZE = 4;
+const uint8_t RECORDING_SIZE = 1;
+const uint8_t ESCAPE_OPTIONS_TRAINING_SIZE = 2;
+const uint8_t PLAYBACK_SIZE = 1;
+
+// the arrays representing each training group's assigned modifiers
+InputModifier *diModifiers[DI_TRAINING_SIZE] = {&LEFT_RIGHT_DI, &RANDOM_DI,
+                                                &SET_DI,        &LEFT_RIGHT_SDI,
+                                                &RANDOM_SDI,    &SET_SDI};
+InputModifier *escapeOptionsModifiers[ESCAPE_OPTIONS_TRAINING_SIZE] = {
+    &MASH_JUMP, &MASH_AIRDODGE};
+InputModifier *outOfShieldModifiers[OUT_OF_SHIELD_TRAINING_SIZE] = {
+    &UP_SMASH_OOS, &UP_B_OOS, &NAIR_OOS, &GRAB_OOS};
+InputModifier *recordingModifier[RECORDING_SIZE] = {&INPUT_RECORDING};
+InputModifier *playbackModifier[PLAYBACK_SIZE] = {&INPUT_PLAYBACK};
 
 /**
  * @brief Construct a new Input Handler:: Input Handler object. This is also
@@ -20,12 +42,15 @@ InputPlayback INPUT_PLAYBACK = InputPlayback(INPUT_CHANGE_STORE);
  *
  */
 InputHandler::InputHandler()
-    : leftPressed(false), upPressed(false), rightPressed(false),
-      downPressed(false), currentIndex(0), currentDirection(Direction::NO_DIR),
-      leftModifiers{&LEFT_RIGHT_DI,  &RANDOM_DI,  &SET_DI,
-                    &LEFT_RIGHT_SDI, &RANDOM_SDI, &SET_SDI},
-      upModifiers{&INPUT_PLAYBACK}, rightModifiers{&MASH_JUMP, &MASH_AIRDODGE},
-      downModifiers{&INPUT_RECORDING}, activeInputModifier(&NO_MODIFIER) {}
+    : trainingActive(false),
+      diTraining(checkDITrainingInput, diModifiers, DI_TRAINING_SIZE),
+      escapeOptionTraining(checkEOTrainingInput, escapeOptionsModifiers,
+                           ESCAPE_OPTIONS_TRAINING_SIZE),
+      outOfShieldTraining(checkOOSTrainingInput, outOfShieldModifiers,
+                          OUT_OF_SHIELD_TRAINING_SIZE),
+      recording(checkRecordingTrainingInput, recordingModifier, 1),
+      playback(checkPlaybackTrainingInput, playbackModifier, 1),
+      currentTraining(&diTraining), activeInputModifier(&NO_MODIFIER) {}
 
 /**
  * @brief Given a controller's data, modifies it based on the active input
@@ -33,79 +58,35 @@ InputHandler::InputHandler()
  * @param data the reference to the current controller's data
  */
 void InputHandler::processInput(Gamecube_Data_t &data) {
-    updateCurrentState(data.report);
+    updateCurrentTraining(data);
+    updateActiveInputModifier(data);
     activeInputModifier->modifyInput(data);
     removeDPadInputs(data);
 }
 
-/**
- * @brief Update the handler's state given the Gamecube controller report
- */
-void InputHandler::updateCurrentState(Gamecube_Report_t &report) {
-    // update active input modifier based on DPad changes
-    if (directionReleased(report.dleft, leftPressed)) {
-        updateActiveInputModifier(Direction::LEFT, leftModifiers,
-                                  LEFT_MOD_SIZE);
+void InputHandler::updateCurrentTraining(Gamecube_Data_t &data) {
+    if (diTraining.checkInputToActivate(data)) {
+        currentTraining = &diTraining;
     }
-    if (directionReleased(report.dup, upPressed)) {
-        updateActiveInputModifier(Direction::UP, upModifiers, UP_MOD_SIZE);
+    if (escapeOptionTraining.checkInputToActivate(data)) {
+        currentTraining = &escapeOptionTraining;
     }
-    if (directionReleased(report.dright, rightPressed)) {
-        updateActiveInputModifier(Direction::RIGHT, rightModifiers,
-                                  RIGHT_MOD_SIZE);
+    if (outOfShieldTraining.checkInputToActivate(data)) {
+        currentTraining = &outOfShieldTraining;
     }
-    if (directionReleased(report.ddown, downPressed)) {
-        updateActiveInputModifier(Direction::DOWN, downModifiers,
-                                  DOWN_MOD_SIZE);
+    if (recording.checkInputToActivate(data)) {
+        currentTraining = &recording;
     }
-    updateDpadButtonState(report.dleft, leftPressed);
-    updateDpadButtonState(report.dup, upPressed);
-    updateDpadButtonState(report.ddown, downPressed);
-    updateDpadButtonState(report.dright, rightPressed);
+    if (playback.checkInputToActivate(data)) {
+        currentTraining = &playback;
+    }
 }
 
-void InputHandler::updateDpadButtonState(const uint8_t input,
-                                         bool &dirPressed) {
-    dirPressed = input != 0;
-}
-
-/**
- * @brief Checks to see if the given DPad input was released
- */
-bool InputHandler::directionReleased(const uint8_t input,
-                                     const bool dirPressed) {
-    return input == 0 && dirPressed;
-}
-
-/**
- * @brief Update the active input modifier given the list of input modifiers and
- * its iterator
- */
-void InputHandler::updateActiveInputModifier(const Direction newDirection,
-                                             InputModifier *modifiers[],
-                                             const uint8_t maxArraySize) {
-    activeInputModifier->cleanUp();
-    activeInputModifier =
-        getNextModifier(newDirection, modifiers, maxArraySize);
-}
-
-/**
- * @brief Get the next input modifier from the given list and its current
- * iterator
- */
-InputModifier *InputHandler::getNextModifier(const Direction newDirection,
-                                             InputModifier *modifiers[],
-                                             const uint8_t maxArraySize) {
-    if (currentDirection == newDirection && currentIndex + 1 < maxArraySize) {
-        currentIndex++;
-        return modifiers[currentIndex];
-    } else if (currentDirection == Direction::NO_DIR) {
-        currentDirection = newDirection;
-        currentIndex = 0;
-        return modifiers[currentIndex];
+void InputHandler::updateActiveInputModifier(Gamecube_Data_t &data) {
+    if (currentTraining->hasNextModifier()) {
+        activeInputModifier = currentTraining->getNextModifier();
     } else {
-        currentDirection = Direction::NO_DIR;
-        currentIndex = 0;
-        return &NO_MODIFIER;
+        currentTraining->resetModifiers();
+        activeInputModifier = &NO_MODIFIER;
     }
 }

@@ -11,8 +11,13 @@
 #include "InputModifiers/EscapeOption/MashJump.hpp"
 #include "InputModifiers/InputModifier.hpp"
 #include "InputModifiers/NoModifier.hpp"
+#include "InputModifiers/OOSOptions/GrabOOS.hpp"
+#include "InputModifiers/OOSOptions/NairOOS.hpp"
+#include "InputModifiers/OOSOptions/UpBOOS.hpp"
+#include "InputModifiers/OOSOptions/UpSmashOOS.hpp"
 #include "InputModifiers/Recording/InputPlayback.hpp"
 #include "InputModifiers/Recording/InputRecording.hpp"
+#include "TrainingGroup.hpp"
 #include "Utility.hpp"
 #include <Nintendo.h>
 
@@ -29,12 +34,10 @@ extern MashJump MASH_JUMP;
 extern InputChangeStore INPUT_CHANGE_STORE;
 extern InputRecording INPUT_RECORDING;
 extern InputPlayback INPUT_PLAYBACK;
-
-// constants for list size for each direction
-const uint8_t LEFT_MOD_SIZE = 6;
-const uint8_t UP_MOD_SIZE = 1;
-const uint8_t RIGHT_MOD_SIZE = 2;
-const uint8_t DOWN_MOD_SIZE = 1;
+extern UpSmashOOS UP_SMASH_OOS;
+extern UpBOOS UP_B_OOS;
+extern NairOOS NAIR_OOS;
+extern GrabOOS GRAB_OOS;
 
 /**
  * @brief Modifies given controller input based on internal state
@@ -54,22 +57,15 @@ const uint8_t DOWN_MOD_SIZE = 1;
  */
 class InputHandler {
   private:
-    // booleans representing button states
-    bool leftPressed;
-    bool upPressed;
-    bool rightPressed;
-    bool downPressed;
+    bool trainingActive;
 
-    // the index of the current Dpad direction's modifier list
-    uint8_t currentIndex;
-    // the current DPad direction
-    Direction currentDirection;
+    TrainingGroup diTraining;
+    TrainingGroup escapeOptionTraining;
+    TrainingGroup outOfShieldTraining;
+    TrainingGroup recording;
+    TrainingGroup playback;
 
-    // the arrays representing each DPad direction's assinged modifiers
-    InputModifier *leftModifiers[LEFT_MOD_SIZE];
-    InputModifier *upModifiers[UP_MOD_SIZE];
-    InputModifier *rightModifiers[RIGHT_MOD_SIZE];
-    InputModifier *downModifiers[DOWN_MOD_SIZE];
+    TrainingGroup *currentTraining;
 
     // Currently active input modifier (there's only one at a time)
     InputModifier *activeInputModifier;
@@ -77,14 +73,8 @@ class InputHandler {
   public:
     InputHandler();
     void processInput(Gamecube_Data_t &data);
-    void updateCurrentState(Gamecube_Report_t &report);
-    void updateDpadButtonState(const uint8_t input, bool &dirPressed);
-    bool directionReleased(const uint8_t input, const bool dirPressed);
-    void updateActiveInputModifier(const Direction newDirection,
-                                   InputModifier *modifiers[],
-                                   const uint8_t maxArraySize);
-    InputModifier *getNextModifier(const Direction newDirection,
-                                   InputModifier *modifiers[],
-                                   const uint8_t maxArraySize);
+    void updateCurrentState(Gamecube_Data_t &data);
+    void updateCurrentTraining(Gamecube_Data_t &data);
+    void updateActiveInputModifier(Gamecube_Data_t &data);
 };
 #endif // SASC_INPUTHANDLER_HPP_

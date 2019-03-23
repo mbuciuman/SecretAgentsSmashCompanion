@@ -8,14 +8,14 @@ void MashJump::modifyInput(Gamecube_Data_t &dataToModify) {
 #endif
     switch (nextState) {
     case State::NEUTRAL:
-        dataToModify.report.x = 0;
+        dataToModify.report.x = false;
         if (waitRemaining()) {
             return;
         }
         nextState = State::JUMP;
         break;
     case State::JUMP:
-        dataToModify.report.x = 1;
+        dataToModify.report.x = true;
         if (waitRemaining()) {
             return;
         }

@@ -13,7 +13,7 @@ void MashAirdodge::modifyInput(Gamecube_Data_t &dataToModify) {
 #endif
     switch (nextState) {
     case State::NEUTRAL:
-        dataToModify.report.l = 0;
+        dataToModify.report.l = false;
         dataToModify.report.left = MIN_AXIS_VAL;
         if (waitRemaining()) {
             return;
@@ -21,7 +21,7 @@ void MashAirdodge::modifyInput(Gamecube_Data_t &dataToModify) {
         nextState = State::AIRDODGE;
         break;
     case State::AIRDODGE:
-        dataToModify.report.l = 1;
+        dataToModify.report.l = true;
         dataToModify.report.left = MAX_AXIS_VAL;
         if (waitRemaining()) {
             return;
