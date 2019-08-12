@@ -1,6 +1,10 @@
 # Secret Agent's Smash Companion
 This project implements an in-line Gamecube Controller adapter which can modify GC controller inputs, primarily for practicing against a virtual opponent in Smash Bros. Ultimate (or Melee). The adapter primarily uses an Arduino Nano in conjuction with a logic-level converter to step-down the Arduino Nano's digital logic to the Gamecube's 3.3 V data line.
 
+<p align="center">
+  <img src="SecretAgentsSmashCompanion.jpg" width="400" class="center">
+</p>
+
 ## Getting Started
 Below are instructions on how to build and upload the code to an Arduino Nano, and how to use the included EAGLE files to get a PCB.
 
