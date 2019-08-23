@@ -79,7 +79,7 @@ After determining which wires represent which inputs, you should be able to stri
 
 I *HIGHLY* recommend using hot glue on the GC_CONS and GC_CONT inputs as the wires are flimsy and can be easily pulled out of the board.
 
-Also, putting the board into a project box will give it further protection. The one I linked above is a transparent, polycarbonate one that I personally used.
+Also, putting the board into a project box will give it further protection. The one I linked above is a transparent, polycarbonate one that I personally used. On top of this, if you choose not to use hot glue, you can use cable glands instead to keep the cables in place on the PCB.
 
 #### Connecting to Console
 The adapter should work immediately after plugging it into the console, and you should be able to see the controller being detected by the Gamecube/Switch as if it was just another controller. The Arduino Nano's light should be on showing that it's powered.
